@@ -20,12 +20,26 @@ namespace Persistance
             {
                 context.Recepies.RemoveRange(context.Recepies);
             }
+
+
             var recepies = new List<Recepie>
             {
                 new Recepie
                 {
                     Name = "Kyckling gryta",
-                    FoodItems = new List<FoodItem>{context.FoodItems.First(f => f.Name == "kyckling"), context.FoodItems.First(f => f.Name == "potatis") }
+                    Ingredients = new List<Ingredient>
+                    { 
+                        new Ingredient() 
+                        {
+                             foodItem = context.FoodItems.First(f => f.Name == "kyckling"),
+                             AmountInGram = 100 
+                        },
+                        new Ingredient()
+                        {
+                            foodItem = context.FoodItems.First(f => f.Name == "potatis"),
+                            AmountInGram = 200
+                        }
+                    }
                 }
             };
 

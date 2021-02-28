@@ -23,7 +23,8 @@ namespace Application.Recepies
             public async Task<List<Recepie>> Handle(Query request, CancellationToken cancellationToken)
             {
                 return await _context.Recepies
-                                     .Include(r => r.FoodItems)
+                                     .Include(r => r.Ingredients)
+                                     .ThenInclude(r => r.foodItem)
                                      .ToListAsync();
             }
         }

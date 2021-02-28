@@ -8,6 +8,6 @@ namespace Domain
         public Guid Id { get; set; }
         public string Name { get; set; }
 
-        public ICollection<FoodItem> FoodItems { get; set; }
+        public ICollection<Ingredient> Ingredients { get; set; }
 }
 }
