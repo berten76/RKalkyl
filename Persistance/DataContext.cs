@@ -10,5 +10,7 @@ namespace Persistance
         }
 
         public DbSet<FoodItem> FoodItems { get; set; }
+
+        public DbSet<Recepie> Recepies {get; set;}
     }
 }

@@ -10,6 +10,31 @@ namespace Persistance
     {
         public static async Task SeedData(DataContext context)
         {
+            await SeedFoodItems(context);
+            await SeedRecepies(context);
+        }
+
+        private static async Task SeedRecepies(DataContext context)
+        {
+            if(context.Recepies.Any())
+            {
+                context.Recepies.RemoveRange(context.Recepies);
+            }
+            var recepies = new List<Recepie>
+            {
+                new Recepie
+                {
+                    Name = "Kyckling gryta",
+                    FoodItems = new List<FoodItem>{context.FoodItems.First(f => f.Name == "kyckling"), context.FoodItems.First(f => f.Name == "potatis") }
+                }
+            };
+
+            await context.Recepies.AddRangeAsync(recepies);
+            await context.SaveChangesAsync();
+        }
+
+        private static async Task SeedFoodItems(DataContext context)
+        {
             if (context.FoodItems.Any()) return;
             
             var foodItems = new List<FoodItem>
