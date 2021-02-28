@@ -8,6 +8,7 @@ namespace Application.Core
         public MappingProfiles()
         {
             CreateMap<FoodItem, FoodItem>();
+            CreateMap<Recepie, Recepie>();
         }
     }
 }
