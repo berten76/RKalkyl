@@ -4,8 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Persistance;
 using MediatR;
-using Application.FoodItems;
-using Application.Core;
+using RKalkyl.Application.FoodItems;
+using RKalkyl.Application.Core;
+using RKalkyl.Persistance;
 
 namespace API.Extentions
 {

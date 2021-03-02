@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Application.Recepies;
-using Domain;
+using RKalkyl.Application.Recepies;
+using RKalkyl.Domain;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers

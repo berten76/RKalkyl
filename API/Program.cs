@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Persistance;
+using RKalkyl.Persistance;
 
 namespace API
 {
@@ -24,7 +24,7 @@ namespace API
         
             try
             {
-                Persistance.DataContext context = services.GetRequiredService<DataContext>();
+                DataContext context = services.GetRequiredService<DataContext>();
                 await context.Database.MigrateAsync();
                 await Seed.SeedData(context);
             }

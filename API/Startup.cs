@@ -12,10 +12,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Persistance;
+using RKalkyl.Persistance;
 using MediatR;
-using Application.FoodItems;
-using Application.Core;
+using RKalkyl.Application.FoodItems;
+using RKalkyl.Application.Core;
 using API.Extentions;
 
 namespace API
