@@ -21,7 +21,7 @@ export default function RecepieList({recepies}: Props)
                                 <div>Not impl</div>
                             </Item.Description>
                             <Item.Extra>
-                                <Button floated='right' content='View' color='blue'/>
+                                <Button floated='right' content='View' color='blue' />
                                 <Label basic content="Not impl"/>
                             </Item.Extra>
                         </Item.Content>
