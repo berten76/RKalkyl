@@ -4,9 +4,10 @@ import { Recepie } from '../../../app/models/recepie';
 
 interface Props {
     recepies: Recepie[];
+    selectRecepie: (id: string) => void; 
 }
 
-export default function RecepieList({recepies}: Props)
+export default function RecepieList({recepies, selectRecepie}: Props)
 {
     return (
         <Segment>
@@ -21,7 +22,7 @@ export default function RecepieList({recepies}: Props)
                                 <div>Not impl</div>
                             </Item.Description>
                             <Item.Extra>
-                                <Button floated='right' content='View' color='blue' />
+                                <Button floated='right' content='View' color='blue' onClick={() => selectRecepie(recepie.id)} />
                                 <Label basic content="Not impl"/>
                             </Item.Extra>
                         </Item.Content>
