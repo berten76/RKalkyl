@@ -22,6 +22,15 @@ function App() {
     })
   }, [])
 
+  function handleCreateMeal(){
+    let newMeal = {
+      id: uuid(),
+      name: 'New meal',
+      ingredients: []
+    };
+    
+    setRecepies([...recepies, newMeal])
+  }
   function handleSelectRecepie(id: string) {
     setSelectedRecepie(id);
   }
@@ -91,7 +100,7 @@ function App() {
   return (
 
     <Fragment> 
-      <NavBar/>
+      <NavBar createMeal={handleCreateMeal}/>
         <Container style={{marginTop: '7em'}}>
           <RecepieDashBoard 
             recepies={recepies} 
