@@ -1,4 +1,4 @@
-import React, { ChangeEvent, SyntheticEvent } from 'react';
+import React from 'react';
 import { Button, Table } from 'semantic-ui-react';
 import { Ingredient } from '../../../app/models/ingredient';
 

@@ -12,7 +12,7 @@ interface Props {
     selectRecepie: (id: string) => void; 
     cancelSelectRecepie: () => void;
     deleteIngredient: (recepieId: string, ingredientId: string) => void;
-    addIngredient: (recepieId: string, ingredient: Ingredient) => void;
+    addOrEditIngredient: (recepieId: string, ingredient: Ingredient) => void;
 }
 
 export default function RecepieDashBoard({recepies, 
@@ -21,14 +21,11 @@ export default function RecepieDashBoard({recepies,
                                           selectRecepie, 
                                           cancelSelectRecepie, 
                                           deleteIngredient, 
-                                          addIngredient} : Props){
+                                          addOrEditIngredient} : Props){
     return (
 <>
 
-    {console.log('render RecepieDashBoard selecteRecepie')}
-    {console.log(selectedRecepie)}
-    {console.log('render RecepieDashBoard Recepies')}
-    {console.log(recepies)}
+
 {!selectedRecepie &&
         <Grid>
             <Grid.Column width='8'>
@@ -48,7 +45,7 @@ export default function RecepieDashBoard({recepies,
                     foodNames={foodNames} 
                     cancelSelectRecepie={cancelSelectRecepie}
                     deleteIngredient={deleteIngredient}
-                    addIngredient={addIngredient}
+                    addOrEditIngredient={addOrEditIngredient}
                 />}
             </Grid.Column>
         </Grid>}

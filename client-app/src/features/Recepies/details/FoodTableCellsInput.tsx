@@ -1,5 +1,5 @@
-import React, { ChangeEvent, SyntheticEvent, useState } from 'react';
-import { Button, ButtonProps, Dropdown, DropdownProps, Input, InputOnChangeData, Table } from 'semantic-ui-react';
+import React, { useState } from 'react';
+import { Button, Dropdown, DropdownProps, Input, InputOnChangeData, Table } from 'semantic-ui-react';
 import { FoodName } from '../../../app/models/foodName';
 import { Ingredient } from '../../../app/models/ingredient';
 
@@ -8,10 +8,10 @@ interface Props {
     foodNames: FoodName[];
     filterOptions: (options:any[], query: string) => any[];
     deleteIngredient: ((ingredientId: string) => void) | undefined;
-    addIngredient: ((ingredient: Ingredient) => void) | undefined;
+    addOrEditIngredient: ((ingredient: Ingredient) => void) | undefined;
 }
 
-export default function FoodTableCellsInput({ingredient, foodNames, filterOptions, deleteIngredient, addIngredient}: Props){
+export default function FoodTableCellsInput({ingredient, foodNames, filterOptions, deleteIngredient, addOrEditIngredient}: Props){
   
     const zeroState = {
         id: '',
@@ -29,30 +29,57 @@ export default function FoodTableCellsInput({ingredient, foodNames, filterOption
         selected: false,
       };
   
-    const initialState = ingredient ?? zeroState;
+    let initialState = ingredient ?? zeroState;
+
+    console.log('input initialState');
+    console.log(initialState);
   
   const [ingredientState, setIngredient] = useState<Ingredient>(initialState)
 
     function HandleOnInputChange(event: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData) {
+
         let newIngredient = {...ingredientState, amountInGram: Number(data.value)};
         setIngredient(newIngredient);
+        // if(addOrEditIngredient && newIngredient.foodItem.name !== '' && newIngredient.amountInGram !== 0){
+      
+        //      addOrEditIngredient(newIngredient);
+        // }
     }
+
     function HandleOnChange(event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps){   
         if(!data) return;
+
         const newFoodItem = {...ingredientState.foodItem, name:data.value as string};
         let newIngredient = {...ingredientState, foodItem: newFoodItem};
+
+        if(addOrEditIngredient && newIngredient.foodItem.name !== '' && newIngredient.amountInGram !== 0){
+
+             addOrEditIngredient(newIngredient);
+        }
         setIngredient(newIngredient);
     }
     function HandleOnAdd() {
-        if(addIngredient) addIngredient(ingredientState)
+        if(addOrEditIngredient) addOrEditIngredient(ingredientState)
         setIngredient(zeroState);
     }
-    
-    console.log('render cell')
-    console.log(ingredientState)
+
+    function onKeyPress(e: any)  {
+        console.log('press');
+        console.log(e.key);
+        
+         if(e.key === 'Enter'){
+            console.log('Enter');
+            console.log(ingredientState);
+            setIngredient(ingredientState);
+         }
+    }
+
+  
+
     return (
         <>
              <Table.Cell >
+              
                     <Dropdown
                         floating
                         fluid
@@ -61,18 +88,22 @@ export default function FoodTableCellsInput({ingredient, foodNames, filterOption
                         options={foodNames}
                         defaultValue={ingredientState.foodItem.name}
                         onChange={HandleOnChange}
+                      
                     />
             </Table.Cell>
             <Table.Cell>
                 <Input
+                    onKeyDown={(e: any) => onKeyPress(e)}
                     defaultValue={ingredientState.amountInGram} 
+                
                     onChange={HandleOnInputChange}
+                     
                   />
             </Table.Cell>
             <Table.Cell>g</Table.Cell>
             <Table.Cell>
                 {deleteIngredient && <Button onClick={() => deleteIngredient(ingredientState.id)}>Delete</Button>}
-                {addIngredient && <Button onClick={() => HandleOnAdd()}>Add</Button>}
+                {addOrEditIngredient && !deleteIngredient && <Button onClick={() => HandleOnAdd()}>Add</Button>}
             </Table.Cell> 
             </>
     )

@@ -5,7 +5,7 @@ import { Recepie } from '../models/recepie';
 import NavBar from './navbar';
 import RecepieDashBoard from '../../features/Recepies/dashboard/RecepieDashBoard';
 import { Ingredient } from '../models/ingredient';
-
+import {v4 as uuid} from 'uuid';
 function App() {
   const [recepies, setRecepies] = useState<Recepie[]>([]);
   const [foodNames, setFoodNames] = useState<string[]>([]);
@@ -34,20 +34,21 @@ function App() {
     if(id === ''){
       return undefined;
     }
-    return recepies.find(r => r.id == id);
+    return recepies.find(r => r.id === id);
   }
-  function HandleAddIngredient(recepieId: string, ingredient: Ingredient){
-    console.log('HandleAddIngredient');
-    console.log(ingredient);
-    let recepie = recepies.find(r => r.id == recepieId);
+  function HandleAddOrEditIngredient(recepieId: string, ingredient: Ingredient){
+   
+    let recepie = recepies.find(r => r.id === recepieId);
     if(recepie !== undefined)
     {
-      let newIngredients = [...recepie.ingredients, ingredient];
-      let newRecepie = {...recepie, ingredients: newIngredients};
+      let updatedIngredients = ingredient.id
+        ?  [...recepie.ingredients.filter(i => i.id !== ingredient.id), ingredient]
+        :  [...recepie.ingredients, {...ingredient, id: uuid()}];
+      let updatedRecepie = {...recepie, ingredients: updatedIngredients};
      
       setRecepies(recepies.map(r => {
         if(r.id ===recepieId ){
-           return newRecepie;
+           return updatedRecepie;
         }
         else{
           return r;
@@ -56,6 +57,7 @@ function App() {
     }
     //setRecepies(recepies);
   }
+
   // function handleAddOrEditRecepie(recepieId: string, ingredient: Ingredient) {
   //   if(ingredient.id) {
   //     let recepie = recepies.find(r => r.id == recepieId);
@@ -66,8 +68,8 @@ function App() {
    
   // }
   function HandleDeleteIngredient(recepieId: string, ingredientId: string){
-    console.log('HandleDeleteIngredient');
-    let recepie = recepies.find(r => r.id == recepieId);
+   
+    let recepie = recepies.find(r => r.id === recepieId);
     if(recepie !== undefined)
     {
       let ingredientList = [...recepie.ingredients.filter(i => i.id !== ingredientId)]
@@ -98,7 +100,7 @@ function App() {
             selectRecepie={handleSelectRecepie} 
             cancelSelectRecepie={handleCanceledRecepie}
             deleteIngredient={HandleDeleteIngredient}
-            addIngredient={HandleAddIngredient}
+            addOrEditIngredient={HandleAddOrEditIngredient}
             />
         </Container>
       

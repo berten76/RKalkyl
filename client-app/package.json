@@ -19,6 +19,7 @@
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^2.0.3",
     "typescript": "^4.1.5",
+    "uuid": "^8.3.2",
     "web-vitals": "^1.1.0"
   },
   "scripts": {
@@ -46,6 +47,7 @@
     ]
   },
   "devDependencies": {
-    "@types/react-select": "^4.0.13"
+    "@types/react-select": "^4.0.13",
+    "@types/uuid": "^8.3.0"
   }
 }

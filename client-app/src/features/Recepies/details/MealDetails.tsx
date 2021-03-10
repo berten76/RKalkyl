@@ -1,10 +1,10 @@
-import React, { ChangeEvent, SyntheticEvent } from 'react';
+import React from 'react';
 import { useState } from 'react';
-import { Button, Card, Dropdown, DropdownItemProps, Icon, Image, Input, List, Table } from 'semantic-ui-react';
+import { Button, Card, Table } from 'semantic-ui-react';
 import { Recepie} from '../../../app/models/recepie';
 //import SelectSearch from 'react-select-search';
-import Select from 'react-select';
-import { FoodItem } from '../../../app/models/foodItem';
+//import Select from 'react-select';
+//import { FoodItem } from '../../../app/models/foodItem';
 import { Ingredient } from '../../../app/models/ingredient';
 import FoodTableCells from './FoodTableCells';
 import { FoodName } from '../../../app/models/foodName';
@@ -15,32 +15,33 @@ interface Props {
     foodNames: string[]
     cancelSelectRecepie: () => void;
     deleteIngredient: (recepieId: string, ingredientId: string) => void;
-    addIngredient: (recepieId: string, ingredient: Ingredient) => void;
+    addOrEditIngredient: (recepieId: string, ingredient: Ingredient) => void;
 }
 // interface op {
 //     value: string;
 //     text: string;
 // }
 
-export default function MealDetails({recepie, foodNames, cancelSelectRecepie, deleteIngredient, addIngredient}: Props){
+export default function MealDetails({recepie, foodNames, cancelSelectRecepie, deleteIngredient, addOrEditIngredient}: Props){
     
-    {console.log('render MealDetails')}
-    {console.log(recepie)}
-    const [searchQuery, SetsearchQuery] = useState<string>('');
-    const [selectedOption, SetSelectedOption] = useState<any>(null);
+   // const [searchQuery, SetsearchQuery] = useState<string>('');
+   // const [selectedOption, SetSelectedOption] = useState<any>(null);
     const [selectedIngredientId, setSelectedIngredientId] = useState<string>('');
+    
     //const [ingredients, Setingredients] = useState<Ingredient[]>(recepie.ingredients);
-    let ingredients = recepie.ingredients;
-    if(recepie){
-    const ingredients = recepie.ingredients.map(i => {
+   // let ingredients = recepie.ingredients;
+   // if(recepie){
+    let ingredients = (recepie.ingredients.map(i => {
+        
         if(i.id === selectedIngredientId){
             i.selected = true;
         }
         else{
             i.selected = false;
         }
-    });
-}
+        return i;
+    })) ;
+//}
 
       function FilterOptions(options:any[], query: string) {
           return options.filter((f: FoodName)=> f.value.toLowerCase()?.startsWith(query.toLowerCase()));
@@ -53,8 +54,8 @@ export default function MealDetails({recepie, foodNames, cancelSelectRecepie, de
       function HandleDeleteIngredient(ingredientId: string) {
             deleteIngredient(recepie.id, ingredientId);
       }
-      function HandleAddIngredient(ingredient: Ingredient) {
-        addIngredient(recepie.id, ingredient);
+      function HandleAddOrEditIngredient(ingredient: Ingredient) {
+        addOrEditIngredient(recepie.id, ingredient);
       }
 
       let ddd= foodNames.map((fName) =>{
@@ -78,7 +79,7 @@ export default function MealDetails({recepie, foodNames, cancelSelectRecepie, de
         <Table.HeaderCell  width={1} ></Table.HeaderCell>
       </Table.Row>
     </Table.Header>
-{console.log('render')}
+
     <Table.Body>
     {ingredients.map(i => (
          <Table.Row key={i.foodItem.name}  onClick={()=> {HandleOnFocus(i.id)}} >
@@ -87,7 +88,7 @@ export default function MealDetails({recepie, foodNames, cancelSelectRecepie, de
                                 foodNames={ddd}
                                 filterOptions={FilterOptions}
                                 deleteIngredient={HandleDeleteIngredient}
-                                addIngredient={undefined}
+                                addOrEditIngredient={HandleAddOrEditIngredient}
                             />
      
            
@@ -104,7 +105,7 @@ export default function MealDetails({recepie, foodNames, cancelSelectRecepie, de
             foodNames={ddd}
             filterOptions={FilterOptions}
             deleteIngredient={undefined}
-            addIngredient={HandleAddIngredient}
+            addOrEditIngredient={HandleAddOrEditIngredient}
             />
        </Table.Row>
     </Table.Body>
