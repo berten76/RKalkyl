@@ -30,6 +30,7 @@ namespace API
             }
             catch(Exception ex)
             {
+                Console.WriteLine("hhjjjjjj");
                 var logger = services.GetRequiredService<ILogger<Program>>();
                 logger.LogError(ex, "An error occured durig migrations");
             }

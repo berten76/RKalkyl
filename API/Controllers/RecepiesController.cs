@@ -31,6 +31,7 @@ namespace API.Controllers
         public async Task<IActionResult> UpdateRecepie(Guid id, Recepie recepie)
         {
             recepie.Id = id;
+           
             return Ok( await Mediator.Send(new Edit.Command(){Recepie = recepie}));
         }
 

@@ -9,10 +9,11 @@ import { Ingredient } from '../../../app/models/ingredient';
 import FoodTableCells from './FoodTableCells';
 import { FoodName } from '../../../app/models/foodName';
 import FoodTableCellsInput from './FoodTableCellsInput';
+import { FoodItem } from '../../../app/models/foodItem';
 
 interface Props {
     recepie: Recepie;
-    foodNames: string[]
+    foodItems: FoodItem[]
     cancelSelectRecepie: () => void;
     deleteIngredient: (recepieId: string, ingredientId: string) => void;
     addOrEditIngredient: (recepieId: string, ingredient: Ingredient) => void;
@@ -22,7 +23,7 @@ interface Props {
 //     text: string;
 // }
 
-export default function MealDetails({recepie, foodNames, cancelSelectRecepie, deleteIngredient, addOrEditIngredient}: Props){
+export default function MealDetails({recepie, foodItems, cancelSelectRecepie, deleteIngredient, addOrEditIngredient}: Props){
     
    // const [searchQuery, SetsearchQuery] = useState<string>('');
    // const [selectedOption, SetSelectedOption] = useState<any>(null);
@@ -58,8 +59,8 @@ export default function MealDetails({recepie, foodNames, cancelSelectRecepie, de
         addOrEditIngredient(recepie.id, ingredient);
       }
 
-      let ddd= foodNames.map((fName) =>{
-        return { value: fName, text: fName}
+      let ddd= foodItems.map((fName) =>{
+        return { value: fName.name, text: fName.name, value2: fName}
     });
 
     return (
@@ -82,7 +83,9 @@ export default function MealDetails({recepie, foodNames, cancelSelectRecepie, de
 
     <Table.Body>
     {ingredients.map(i => (
+      
          <Table.Row key={i.foodItem.name}  onClick={()=> {HandleOnFocus(i.id)}} >
+
             {i.selected &&  <FoodTableCellsInput 
                                 ingredient={i}
                                 foodNames={ddd}

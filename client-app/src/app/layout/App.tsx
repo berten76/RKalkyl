@@ -1,24 +1,27 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import axios from 'axios';
 import { Container } from 'semantic-ui-react'
 import { Recepie } from '../models/recepie';
 import NavBar from './navbar';
 import RecepieDashBoard from '../../features/Recepies/dashboard/RecepieDashBoard';
 import { Ingredient } from '../models/ingredient';
 import {v4 as uuid} from 'uuid';
+import agent from '../api/agent';
+import { FoodItem } from '../models/foodItem';
+
 function App() {
   const [recepies, setRecepies] = useState<Recepie[]>([]);
-  const [foodNames, setFoodNames] = useState<string[]>([]);
+  const [foodItems, setFoodItems] = useState<FoodItem[]>([]);
   const [selectedRecepie, setSelectedRecepie] = useState<string>('');
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    axios.get<Recepie[]>('http://localhost:5000/api/Recepies').then(response => {
-      setRecepies(response.data);
+      agent.Recepies.list().then(response => {
+      setRecepies(response);
     })
   }, [])
   useEffect(() => {
-    axios.get<string[]>('http://localhost:5000/api/FoodNames').then(response => {
-      setFoodNames(response.data);
+      agent.FoodItems.list().then(response => {
+        setFoodItems(response);
     })
   }, [])
 
@@ -46,23 +49,58 @@ function App() {
     return recepies.find(r => r.id === id);
   }
   function HandleAddOrEditIngredient(recepieId: string, ingredient: Ingredient){
-   
+   setSubmitting(true);
+console.log('HandleAddOrEditIngredient');
+console.log(ingredient);
     let recepie = recepies.find(r => r.id === recepieId);
+    console.log(recepie)
     if(recepie !== undefined)
     {
-      let updatedIngredients = ingredient.id
-        ?  [...recepie.ingredients.filter(i => i.id !== ingredient.id), ingredient]
-        :  [...recepie.ingredients, {...ingredient, id: uuid()}];
+      //let updatedIngredients : Ingredient[];
+      let updatedIngredients = new Array<Ingredient>();
+      console.log('ff');
+      
+
+      if(ingredient.id) {
+        recepie.ingredients.forEach(i => {
+          if(i.id !== ingredient.id){
+            updatedIngredients.push(i);
+            console.log('push i')
+          }
+          else{
+            updatedIngredients.push(ingredient);
+            console.log('push ingredient')
+          }
+        });
+      }
+      else {
+        updatedIngredients =  [...recepie.ingredients, {...ingredient, id: uuid()}];
+      }
+      console.log('updatedIngredients');
+      console.log(updatedIngredients);
+     // let updatedIngredients = ingredient.id
+     //   ?  [...recepie.ingredients.filter(i => i.id !== ingredient.id), ingredient]
+     //   :  [...recepie.ingredients, {...ingredient, id: uuid()}];
       let updatedRecepie = {...recepie, ingredients: updatedIngredients};
-     
-      setRecepies(recepies.map(r => {
-        if(r.id ===recepieId ){
-           return updatedRecepie;
-        }
-        else{
-          return r;
-        }
-      }));
+
+     console.log('update');
+     console.log(updatedRecepie);
+      agent.Recepies.update(updatedRecepie).then(() => {
+        setRecepies(recepies.map(r => {
+          if(r.id ===recepieId ){
+             return updatedRecepie;
+          }
+          else{
+            return r;
+          }
+        }));
+        setSubmitting(false);
+      })
+      
+
+    }
+    else{
+      setSubmitting(false);
     }
     //setRecepies(recepies);
   }
@@ -104,7 +142,7 @@ function App() {
         <Container style={{marginTop: '7em'}}>
           <RecepieDashBoard 
             recepies={recepies} 
-            foodNames={foodNames}
+            foodItems={foodItems}
             selectedRecepie={getSelectedRecepie(selectedRecepie)}
             selectRecepie={handleSelectRecepie} 
             cancelSelectRecepie={handleCanceledRecepie}

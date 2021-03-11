@@ -1,5 +1,6 @@
 import React from 'react'
 import { Grid } from 'semantic-ui-react'
+import { FoodItem } from '../../../app/models/foodItem'
 import { Ingredient } from '../../../app/models/ingredient'
 import { Recepie } from '../../../app/models/recepie'
 import MealDetails from '../details/MealDetails'
@@ -7,7 +8,7 @@ import RecepieList from './RecepieList'
 
 interface Props {
     recepies: Recepie[];
-    foodNames: string[];
+    foodItems: FoodItem[];
     selectedRecepie: Recepie | undefined;
     selectRecepie: (id: string) => void; 
     cancelSelectRecepie: () => void;
@@ -16,7 +17,7 @@ interface Props {
 }
 
 export default function RecepieDashBoard({recepies, 
-                                          foodNames, 
+                                          foodItems, 
                                           selectedRecepie, 
                                           selectRecepie, 
                                           cancelSelectRecepie, 
@@ -42,7 +43,7 @@ export default function RecepieDashBoard({recepies,
                 {selectedRecepie &&
                 <MealDetails 
                     recepie={selectedRecepie} 
-                    foodNames={foodNames} 
+                    foodItems={foodItems} 
                     cancelSelectRecepie={cancelSelectRecepie}
                     deleteIngredient={deleteIngredient}
                     addOrEditIngredient={addOrEditIngredient}

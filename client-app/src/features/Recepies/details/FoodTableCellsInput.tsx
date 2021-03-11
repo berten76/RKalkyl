@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Dropdown, DropdownProps, Input, InputOnChangeData, Table } from 'semantic-ui-react';
+import { Button, Dropdown, DropdownProps, FeedLike, Input, InputOnChangeData, Table } from 'semantic-ui-react';
+import { FoodItem } from '../../../app/models/foodItem';
 import { FoodName } from '../../../app/models/foodName';
 import { Ingredient } from '../../../app/models/ingredient';
 
@@ -48,15 +49,28 @@ export default function FoodTableCellsInput({ingredient, foodNames, filterOption
 
     function HandleOnChange(event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps){   
         if(!data) return;
+console.log('HandleOnChange');
+console.log(data);
+console.log(foodNames[0]);
+        let selectedItem = foodNames.find(i => i.value === data.value);
+        if(selectedItem)
+        {
+            let newFoodItem = selectedItem.value2;
+            let newIngredient = {...ingredientState, foodItem: newFoodItem};
+            if(addOrEditIngredient && newIngredient.foodItem.name !== '' && newIngredient.amountInGram !== 0){
 
-        const newFoodItem = {...ingredientState.foodItem, name:data.value as string};
-        let newIngredient = {...ingredientState, foodItem: newFoodItem};
-
-        if(addOrEditIngredient && newIngredient.foodItem.name !== '' && newIngredient.amountInGram !== 0){
-
-             addOrEditIngredient(newIngredient);
+                     addOrEditIngredient(newIngredient);
+            }
+            setIngredient(newIngredient);
         }
-        setIngredient(newIngredient);
+       // const newFoodItem = {...ingredientState.foodItem, name:data.value as string};
+        // let newIngredient = data.v//{...ingredientState, foodItem: newFoodItem};
+
+        // if(addOrEditIngredient && newIngredient.foodItem.name !== '' && newIngredient.amountInGram !== 0){
+
+        //      addOrEditIngredient(newIngredient);
+        // }
+        // setIngredient(newIngredient);
     }
     function HandleOnAdd() {
         if(addOrEditIngredient) addOrEditIngredient(ingredientState)
@@ -71,6 +85,7 @@ export default function FoodTableCellsInput({ingredient, foodNames, filterOption
             console.log('Enter');
             console.log(ingredientState);
             setIngredient(ingredientState);
+            if(addOrEditIngredient) addOrEditIngredient(ingredientState);
          }
     }
 
