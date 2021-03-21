@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RKalkyl.Persistance;
 
 namespace Persistance.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210320173215_ChangeIngredience2")]
+    partial class ChangeIngredience2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,24 +43,21 @@ namespace Persistance.Migrations
 
             modelBuilder.Entity("RKalkyl.Domain.Ingredient", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("MealId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("FoodItemId")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("AmountInGram")
                         .HasColumnType("INTEGER");
 
-                    b.Property<Guid>("FoodItemId")
+                    b.Property<Guid>("Id")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("MealId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
+                    b.HasKey("MealId", "FoodItemId");
 
                     b.HasIndex("FoodItemId");
-
-                    b.HasIndex("MealId");
 
                     b.ToTable("Ingredient");
                 });

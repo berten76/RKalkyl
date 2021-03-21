@@ -1,22 +1,22 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Container } from 'semantic-ui-react'
-import { Recepie } from '../models/recepie';
+import { Meal } from '../models/meal';
 import NavBar from './navbar';
-import RecepieDashBoard from '../../features/Recepies/dashboard/RecepieDashBoard';
+import MealDashBoard from '../../features/Meals/dashboard/MealDashBoard';
 import { Ingredient } from '../models/ingredient';
 import {v4 as uuid} from 'uuid';
 import agent from '../api/agent';
 import { FoodItem } from '../models/foodItem';
 
 function App() {
-  const [recepies, setRecepies] = useState<Recepie[]>([]);
+  const [meals, setMeals] = useState<Meal[]>([]);
   const [foodItems, setFoodItems] = useState<FoodItem[]>([]);
-  const [selectedRecepie, setSelectedRecepie] = useState<string>('');
+  const [selectedMeal, setSelectedMeal] = useState<string>('');
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-      agent.Recepies.list().then(response => {
-      setRecepies(response);
+      agent.Meals.list().then(response => {
+      setMeals(response);
     })
   }, [])
   useEffect(() => {
@@ -27,34 +27,34 @@ function App() {
 
   function handleCreateMeal(){
     let newMeal = {
-      id: uuid(),
+      mealId: uuid(),
       name: 'New meal',
       ingredients: []
     };
     
-    setRecepies([...recepies, newMeal])
+    setMeals([...meals, newMeal])
   }
-  function handleSelectRecepie(id: string) {
-    setSelectedRecepie(id);
-  }
-
-  function handleCanceledRecepie() {
-    setSelectedRecepie('');
+  function handleSelectMeal(id: string) {
+    setSelectedMeal(id);
   }
 
-  function getSelectedRecepie(id: string) {
+  function handleCanceledMeal() {
+    setSelectedMeal('');
+  }
+
+  function getSelectedMeal(id: string) {
     if(id === ''){
       return undefined;
     }
-    return recepies.find(r => r.id === id);
+    return meals.find(r => r.mealId === id);
   }
-  function HandleAddOrEditIngredient(recepieId: string, ingredient: Ingredient){
+  function HandleAddOrEditIngredient(mealId: string, ingredient: Ingredient){
    setSubmitting(true);
 console.log('HandleAddOrEditIngredient');
 console.log(ingredient);
-    let recepie = recepies.find(r => r.id === recepieId);
-    console.log(recepie)
-    if(recepie !== undefined)
+    let meal = meals.find(r => r.mealId === mealId);
+    console.log(meal)
+    if(meal !== undefined)
     {
       //let updatedIngredients : Ingredient[];
       let updatedIngredients = new Array<Ingredient>();
@@ -62,7 +62,7 @@ console.log(ingredient);
       
 
       if(ingredient.id) {
-        recepie.ingredients.forEach(i => {
+        meal.ingredients.forEach(i => {
           if(i.id !== ingredient.id){
             updatedIngredients.push(i);
             console.log('push i')
@@ -74,21 +74,20 @@ console.log(ingredient);
         });
       }
       else {
-        updatedIngredients =  [...recepie.ingredients, {...ingredient, id: uuid()}];
+        updatedIngredients =  [...meal.ingredients, {...ingredient, id: uuid()}];
       }
       console.log('updatedIngredients');
       console.log(updatedIngredients);
-     // let updatedIngredients = ingredient.id
-     //   ?  [...recepie.ingredients.filter(i => i.id !== ingredient.id), ingredient]
-     //   :  [...recepie.ingredients, {...ingredient, id: uuid()}];
-      let updatedRecepie = {...recepie, ingredients: updatedIngredients};
+
+      let updatedMeal = {...meal, ingredients: updatedIngredients};
 
      console.log('update');
-     console.log(updatedRecepie);
-      agent.Recepies.update(updatedRecepie).then(() => {
-        setRecepies(recepies.map(r => {
-          if(r.id ===recepieId ){
-             return updatedRecepie;
+     console.log(updatedMeal);
+     if(ingredient.id !== ''){
+      agent.Ingredients.update(ingredient).then(() => {
+        setMeals(meals.map(r => {
+          if(r.mealId ===mealId ){
+             return updatedMeal;
           }
           else{
             return r;
@@ -96,6 +95,25 @@ console.log(ingredient);
         }));
         setSubmitting(false);
       })
+    }
+    else{
+      console.log('jjjjjjjjjjjjjjjjjjjj');
+      console.log(ingredient);
+      ingredient.id = 'new';
+      ingredient.mealId = mealId;
+      agent.Ingredients.create(ingredient).then(() => {
+       /* console.log('inide');
+        setMeals(meals.map(r => {
+          if(r.mealId ===mealId ){
+             return updatedMeal;
+          }
+          else{
+            return r;
+          }
+        }));*/
+        setSubmitting(false);
+      })
+    }
       
 
     }
@@ -105,33 +123,25 @@ console.log(ingredient);
     //setRecepies(recepies);
   }
 
-  // function handleAddOrEditRecepie(recepieId: string, ingredient: Ingredient) {
-  //   if(ingredient.id) {
-  //     let recepie = recepies.find(r => r.id == recepieId);
-  //     if(recepie !== undefined){
-  //         let recepie2 = [...recepies.filter(x=> x.id !== )]
-  //     }
-  //   }
+
+  function HandleDeleteIngredient(mealId: string, ingredientId: string){
    
-  // }
-  function HandleDeleteIngredient(recepieId: string, ingredientId: string){
-   
-    let recepie = recepies.find(r => r.id === recepieId);
-    if(recepie !== undefined)
+    let meal = meals.find(r => r.mealId === mealId);
+    if(meal !== undefined)
     {
-      let ingredientList = [...recepie.ingredients.filter(i => i.id !== ingredientId)]
-      const recepie2 = {...recepie,  ingredients: ingredientList};
+      let ingredientList = [...meal.ingredients.filter(i => i.id !== ingredientId)]
+      const meal2 = {...meal,  ingredients: ingredientList};
     
-      setRecepies(recepies.map(r => {
-        if(r.id ===recepieId ){
-           return recepie2;
+      setMeals(meals.map(r => {
+        if(r.mealId ===mealId ){
+           return meal2;
         }
         else{
           return r;
         }
       }));
      
-      handleSelectRecepie(recepieId);
+      handleSelectMeal(mealId);
      // setRecepies(tmp);
     }
   }
@@ -140,12 +150,12 @@ console.log(ingredient);
     <Fragment> 
       <NavBar createMeal={handleCreateMeal}/>
         <Container style={{marginTop: '7em'}}>
-          <RecepieDashBoard 
-            recepies={recepies} 
+          <MealDashBoard 
+            meals={meals} 
             foodItems={foodItems}
-            selectedRecepie={getSelectedRecepie(selectedRecepie)}
-            selectRecepie={handleSelectRecepie} 
-            cancelSelectRecepie={handleCanceledRecepie}
+            selectedMeal={getSelectedMeal(selectedMeal)}
+            selectMeal={handleSelectMeal} 
+            cancelSelectMeal={handleCanceledMeal}
             deleteIngredient={HandleDeleteIngredient}
             addOrEditIngredient={HandleAddOrEditIngredient}
             />

@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RKalkyl.Persistance;
 
 namespace Persistance.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210313193341_addNavigation2")]
+    partial class addNavigation2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,7 +82,7 @@ namespace Persistance.Migrations
             modelBuilder.Entity("RKalkyl.Domain.Ingredient", b =>
                 {
                     b.HasOne("RKalkyl.Domain.FoodItem", "foodItem")
-                        .WithMany("Ingredients")
+                        .WithMany()
                         .HasForeignKey("FoodItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -94,11 +96,6 @@ namespace Persistance.Migrations
                     b.Navigation("foodItem");
 
                     b.Navigation("Meal");
-                });
-
-            modelBuilder.Entity("RKalkyl.Domain.FoodItem", b =>
-                {
-                    b.Navigation("Ingredients");
                 });
 
             modelBuilder.Entity("RKalkyl.Domain.Meal", b =>

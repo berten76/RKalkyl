@@ -14,34 +14,36 @@ namespace RKalkyl.Persistance
            // context.Recepies.RemoveRange(context.Recepies);
            // context.Ingredient.RemoveRange(context.Ingredient);
           //  context.FoodItems.RemoveRange(context.FoodItems);
-            await context.SaveChangesAsync();
+           // await context.SaveChangesAsync();
             await SeedFoodItems(context);
             await SeedRecepies(context);
         }
 
         private static async Task SeedRecepies(DataContext context)
         {
-            if(context.Recepies.Any())
+            if(context.Meals.Any())
             {
                 return;
                // context.Recepies.RemoveRange(context.Recepies);
             }
 
 
-            var recepies = new List<Recepie>
+            var recepies = new List<Meal>
             {
-                new Recepie
+                new Meal
                 {
                     Name = "Kyckling gryta",
                     Ingredients = new List<Ingredient>
                     { 
                         new Ingredient() 
                         {
+                            //Id = Guid.NewGuid(),
                              foodItem = context.FoodItems.First(f => f.Name == "Gris bacon stekt"),
                              AmountInGram = 100 
                         },
                         new Ingredient()
                         {
+                           // Id = Guid.NewGuid(),
                             foodItem = context.FoodItems.First(f => f.Name == "Potatismjöl"),
                             AmountInGram = 200
                         }
@@ -49,7 +51,7 @@ namespace RKalkyl.Persistance
                 }
             };
 
-            await context.Recepies.AddRangeAsync(recepies);
+            await context.Meals.AddRangeAsync(recepies);
             await context.SaveChangesAsync();
         }
 

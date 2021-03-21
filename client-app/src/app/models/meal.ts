@@ -1,7 +1,7 @@
 import { Ingredient } from "./ingredient";
 
-export interface Recepie {
-    id: string;
+export interface Meal {
+    mealId: string;
     name: string;
     ingredients: Ingredient[];
   }

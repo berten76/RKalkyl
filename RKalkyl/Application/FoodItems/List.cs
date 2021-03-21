@@ -5,6 +5,7 @@ using RKalkyl.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using RKalkyl.Persistance;
+using System;
 
 namespace RKalkyl.Application.FoodItems
 {
@@ -29,7 +30,15 @@ namespace RKalkyl.Application.FoodItems
                 //     values.Add(dbValues[i]);
                 // }
                 // return values;
-                return await _context.FoodItems.ToListAsync();
+                try
+                {
+                var items =  await _context.FoodItems.AsNoTracking().ToListAsync();
+                return items;
+                }
+                catch(Exception e)
+                {
+                     return await _context.FoodItems.ToListAsync();
+                }
             }
         }
     }

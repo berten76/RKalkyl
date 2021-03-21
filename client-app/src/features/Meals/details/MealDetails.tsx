@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { Button, Card, Table } from 'semantic-ui-react';
-import { Recepie} from '../../../app/models/recepie';
+import { Meal} from '../../../app/models/meal';
 //import SelectSearch from 'react-select-search';
 //import Select from 'react-select';
 //import { FoodItem } from '../../../app/models/foodItem';
@@ -12,18 +12,18 @@ import FoodTableCellsInput from './FoodTableCellsInput';
 import { FoodItem } from '../../../app/models/foodItem';
 
 interface Props {
-    recepie: Recepie;
+    meal: Meal;
     foodItems: FoodItem[]
-    cancelSelectRecepie: () => void;
-    deleteIngredient: (recepieId: string, ingredientId: string) => void;
-    addOrEditIngredient: (recepieId: string, ingredient: Ingredient) => void;
+    cancelSelectMeal: () => void;
+    deleteIngredient: (MealId: string, ingredientId: string) => void;
+    addOrEditIngredient: (meald: string, ingredient: Ingredient) => void;
 }
 // interface op {
 //     value: string;
 //     text: string;
 // }
 
-export default function MealDetails({recepie, foodItems, cancelSelectRecepie, deleteIngredient, addOrEditIngredient}: Props){
+export default function MealDetails({meal, foodItems, cancelSelectMeal, deleteIngredient, addOrEditIngredient}: Props){
     
    // const [searchQuery, SetsearchQuery] = useState<string>('');
    // const [selectedOption, SetSelectedOption] = useState<any>(null);
@@ -32,7 +32,7 @@ export default function MealDetails({recepie, foodItems, cancelSelectRecepie, de
     //const [ingredients, Setingredients] = useState<Ingredient[]>(recepie.ingredients);
    // let ingredients = recepie.ingredients;
    // if(recepie){
-    let ingredients = (recepie.ingredients.map(i => {
+    let ingredients = (meal.ingredients.map(i => {
         
         if(i.id === selectedIngredientId){
             i.selected = true;
@@ -53,10 +53,10 @@ export default function MealDetails({recepie, foodItems, cancelSelectRecepie, de
       };
 
       function HandleDeleteIngredient(ingredientId: string) {
-            deleteIngredient(recepie.id, ingredientId);
+            deleteIngredient(meal.mealId, ingredientId);
       }
       function HandleAddOrEditIngredient(ingredient: Ingredient) {
-        addOrEditIngredient(recepie.id, ingredient);
+        addOrEditIngredient(meal.mealId, ingredient);
       }
 
       let ddd= foodItems.map((fName) =>{
@@ -66,7 +66,7 @@ export default function MealDetails({recepie, foodItems, cancelSelectRecepie, de
     return (
         <Card fluid>
             <Card.Content>
-            <Card.Header>{recepie.name}</Card.Header>
+            <Card.Header>{meal.name}</Card.Header>
             <Card.Meta>
                 <span className='date'>Joined in 2015</span>
             </Card.Meta>
@@ -117,7 +117,7 @@ export default function MealDetails({recepie, foodItems, cancelSelectRecepie, de
             </Card.Description>
             </Card.Content>
             <Card.Content extra>
-                <Button onClick={() => cancelSelectRecepie()} basic color='grey' content='Close'/>
+                <Button onClick={() => cancelSelectMeal()} basic color='grey' content='Close'/>
             </Card.Content>
         </Card>
     )

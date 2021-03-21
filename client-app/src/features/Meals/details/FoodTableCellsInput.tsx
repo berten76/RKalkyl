@@ -12,17 +12,19 @@ interface Props {
     addOrEditIngredient: ((ingredient: Ingredient) => void) | undefined;
 }
 
+  
 export default function FoodTableCellsInput({ingredient, foodNames, filterOptions, deleteIngredient, addOrEditIngredient}: Props){
   
     const zeroState = {
         id: '',
         foodItem: {
-            id: '',
+            foodItemId: '',
             name: '',
             protein: 0,
             carbs:0,
             fat: 0,
         },
+        mealId: '',
         amountInGram: 0,
         protein: 0,
         carbs: 0,

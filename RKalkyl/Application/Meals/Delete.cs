@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using MediatR;
 using RKalkyl.Persistance;
 
-namespace RKalkyl.Application.Recepies
+namespace RKalkyl.Application.Meals
 {
     public class Delete
     {
@@ -22,8 +22,8 @@ namespace RKalkyl.Application.Recepies
             }
             public async Task<Unit> Handle(Command cmd, CancellationToken cancellationToken)
             {
-                var recepie = await _context.Recepies.FindAsync(cmd.Id);
-                _context.Recepies.Remove(recepie);
+                var meal = await _context.Meals.FindAsync(cmd.Id);
+                _context.Meals.Remove(meal);
                 await _context.SaveChangesAsync();
                 return Unit.Value;
             }

@@ -1,28 +1,31 @@
 import React from 'react';
 import { Button, Item, Label, Segment } from 'semantic-ui-react';
-import { Recepie } from '../../../app/models/recepie';
+import { Meal } from '../../../app/models/meal';
 
 interface Props {
-    recepies: Recepie[];
-    selectRecepie: (id: string) => void; 
+    meals: Meal[];
+    selectMeal: (mealId: string) => void; 
 }
 
-export default function RecepieList({recepies, selectRecepie}: Props)
+export default function MealList({meals, selectMeal}: Props)
 {
     return (
         <Segment>
             <Item.Group divided>
-                {recepies.map(recepie => (
-                    <Item key={recepie.id}>
+                {meals.map(meal => (
+                    
+                    <Item key={meal.mealId}>
+                        {console.log('meal.id')}
+                        {console.log(meal.mealId)}
                         <Item.Content>
-                            <Item.Header as='a'>{recepie.name}</Item.Header>
+                            <Item.Header as='a'>{meal.name}</Item.Header>
                             <Item.Meta>not impl</Item.Meta>
                             <Item.Description>
                                 <div>Not impl</div>
                                 <div>Not impl</div>
                             </Item.Description>
                             <Item.Extra>
-                                <Button floated='right' content='View' color='blue' onClick={() => selectRecepie(recepie.id)} />
+                                <Button floated='right' content='View' color='blue' onClick={() => selectMeal(meal.mealId)} />
                                 <Label basic content="Not impl"/>
                             </Item.Extra>
                         </Item.Content>

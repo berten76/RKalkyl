@@ -1,7 +1,8 @@
 import axios, { AxiosResponse } from 'axios';
 import { request } from 'node:http';
 import { FoodItem } from '../models/foodItem';
-import { Recepie } from '../models/recepie';
+import { Meal } from '../models/meal';
+import { Ingredient } from '../models/ingredient';
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
@@ -14,12 +15,20 @@ const requests = {
     del: <T> (url: string) => axios.delete<T>(url).then(responseBody),
 }
 
-const Recepies = {
-    list: () => requests.get<Recepie[]>('/recepies'),
-    details: (id: string) => requests.get<Recepie>(`/recepies/${id}`),
-    create: (recepie: Recepie) => axios.post('/recepies', recepie),
-    update: (recepie: Recepie) => axios.put(`/recepies/${recepie.id}`, recepie),
-    delete: (id: string) => axios.delete(`/recepies/${id}`)
+const Meals = {
+    list: () => requests.get<Meal[]>('/meals'),
+    details: (id: string) => requests.get<Meal>(`/meals/${id}`),
+    create: (meal: Meal) => axios.post('/meals', meal),
+    update: (meal: Meal) => axios.put(`/meals/${meal.mealId}`, meal),
+    delete: (id: string) => axios.delete(`/meals/${id}`)
+}
+
+const Ingredients = {
+    list: () => requests.get<Ingredient[]>('/ingredients'),
+    details: (id: string) => requests.get<Ingredient>(`/ingredients/${id}`),
+    create: (ingredient: Ingredient) => axios.post('/ingredients', ingredient),
+    update: (ingredient: Ingredient) => axios.put(`/ingredients/${ingredient.id}`, ingredient),
+    delete: (id: string) => axios.delete(`/ingredients/${id}`)
 }
 
 const FoodItems = {
@@ -27,7 +36,8 @@ const FoodItems = {
 }
 
 const agent = {
-    Recepies,
+    Meals,
+    Ingredients,
     FoodItems
 }
 

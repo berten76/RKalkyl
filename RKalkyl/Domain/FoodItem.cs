@@ -1,10 +1,15 @@
 using System;
+using System.Collections.Generic;
 
 namespace RKalkyl.Domain
 {
     public class FoodItem
     {
-        public Guid Id { get; set; }
+        static int staticCount;
+        int counter;
+        public Guid FoodItemId { get; set; }
+
+        public ICollection<Ingredient> Ingredients { get; set; }
         
         public string Name { get; set; }
 
@@ -13,5 +18,11 @@ namespace RKalkyl.Domain
         public double Carbs { get; set; }
 
         public double Fat { get; set; }
+
+        public FoodItem()
+        {
+            staticCount++;
+            counter = staticCount;
+        }
     }
 }

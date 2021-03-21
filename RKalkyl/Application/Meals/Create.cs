@@ -1,35 +1,31 @@
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
 using RKalkyl.Domain;
 using MediatR;
 using RKalkyl.Persistance;
 
-namespace RKalkyl.Application.FoodItems
+namespace RKalkyl.Application.Meals
 {
-    public class Edit
+    public class Create
     {
         public class Command : IRequest
         {
-            public FoodItem FoodItem { get; set; }
+            public Meal Meal {get; set;}
         }
+
         public class Handler : IRequestHandler<Command>
         {
             private readonly DataContext _context;
-            private readonly IMapper _mapper;
-            public Handler(DataContext context, IMapper mapper)
+            public Handler(DataContext context)
             {
-                _mapper = mapper;
                 _context = context;
             }
             public async Task<Unit> Handle(Command cmd, CancellationToken cancellationToken)
             {
-                var foodItem = await _context.FoodItems.FindAsync(cmd.FoodItem.FoodItemId);
-                _mapper.Map(cmd.FoodItem, foodItem);
+                _context.Meals.Add(cmd.Meal);
                 await _context.SaveChangesAsync();
                 return Unit.Value;
             }
-
         }
     }
 }

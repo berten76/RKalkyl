@@ -1,20 +1,20 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using RKalkyl.Domain;
 using MediatR;
-using RKalkyl.Persistance;
 using Microsoft.EntityFrameworkCore;
-using System;
 using Microsoft.Extensions.Logging;
+using RKalkyl.Domain;
+using RKalkyl.Persistance;
 
-namespace RKalkyl.Application.Recepies
+namespace Application.Ingredients
 {
     public class Edit
     {
         public class Command : IRequest
         {
-            public Recepie Recepie { get; set; }
+            public Ingredient Ingredient { get; set; }
         }
         public class Handler : IRequestHandler<Command>
         {
@@ -32,12 +32,21 @@ namespace RKalkyl.Application.Recepies
             {
                 try
                 {
-                var recepie = await _context.Recepies
-                                            .Include(r => r.Ingredients)
-                                            .ThenInclude(r => r.foodItem)
-                                            .FirstOrDefaultAsync(r => r.Id == cmd.Recepie.Id);
-                _mapper.Map(cmd.Recepie, recepie);
-                await _context.SaveChangesAsync();
+                     var ingredient = await _context.Ingredient
+                                            .Include(r => r.foodItem)
+                                            .FirstOrDefaultAsync(r => r.Id == cmd.Ingredient.Id);
+
+                                            //.FirstOrDefaultAsync(r => r.MealId == cmd.Meal.MealId);
+                
+                if(ingredient.foodItem.FoodItemId != cmd.Ingredient.foodItem.FoodItemId)
+                {
+                    ingredient.foodItem =  cmd.Ingredient.foodItem;
+                }
+                   // ingredient.FoodItemId = cmd.Ingredient.foodItem.FoodItemId;
+                    ingredient.AmountInGram =  cmd.Ingredient.AmountInGram;
+                   // _mapper.Map(cmd.Ingredient, ingredient); 
+
+                    await _context.SaveChangesAsync();
                 }
                 catch(Exception ex)
                 {

@@ -1,16 +1,16 @@
 using System.Threading;
 using System.Threading.Tasks;
-using RKalkyl.Domain;
 using MediatR;
+using RKalkyl.Domain;
 using RKalkyl.Persistance;
 
-namespace RKalkyl.Application.Recepies
+namespace Application.Ingredients
 {
-    public class Create
+   public class Create
     {
         public class Command : IRequest
         {
-            public Recepie Recepie {get; set;}
+            public Ingredient Ingredient {get; set;}
         }
 
         public class Handler : IRequestHandler<Command>
@@ -22,7 +22,7 @@ namespace RKalkyl.Application.Recepies
             }
             public async Task<Unit> Handle(Command cmd, CancellationToken cancellationToken)
             {
-                _context.Recepies.Add(cmd.Recepie);
+                _context.Ingredient.Add(cmd.Ingredient);
                 await _context.SaveChangesAsync();
                 return Unit.Value;
             }

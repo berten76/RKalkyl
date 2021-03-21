@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RKalkyl.Persistance;
 
 namespace Persistance.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210311101459_ChangeFromIngredientToMeal")]
+    partial class ChangeFromIngredientToMeal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -18,7 +20,7 @@ namespace Persistance.Migrations
 
             modelBuilder.Entity("RKalkyl.Domain.FoodItem", b =>
                 {
-                    b.Property<Guid>("FoodItemId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
@@ -34,7 +36,7 @@ namespace Persistance.Migrations
                     b.Property<double>("Protein")
                         .HasColumnType("REAL");
 
-                    b.HasKey("FoodItemId");
+                    b.HasKey("Id");
 
                     b.ToTable("FoodItems");
                 });
@@ -48,57 +50,46 @@ namespace Persistance.Migrations
                     b.Property<int>("AmountInGram")
                         .HasColumnType("INTEGER");
 
-                    b.Property<Guid>("FoodItemId")
+                    b.Property<Guid?>("MealId")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("MealId")
+                    b.Property<Guid?>("foodItemId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FoodItemId");
-
                     b.HasIndex("MealId");
+
+                    b.HasIndex("foodItemId");
 
                     b.ToTable("Ingredient");
                 });
 
             modelBuilder.Entity("RKalkyl.Domain.Meal", b =>
                 {
-                    b.Property<Guid>("MealId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("MealId");
+                    b.HasKey("Id");
 
                     b.ToTable("Meals");
                 });
 
             modelBuilder.Entity("RKalkyl.Domain.Ingredient", b =>
                 {
-                    b.HasOne("RKalkyl.Domain.FoodItem", "foodItem")
+                    b.HasOne("RKalkyl.Domain.Meal", null)
                         .WithMany("Ingredients")
-                        .HasForeignKey("FoodItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MealId");
 
-                    b.HasOne("RKalkyl.Domain.Meal", "Meal")
-                        .WithMany("Ingredients")
-                        .HasForeignKey("MealId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("RKalkyl.Domain.FoodItem", "foodItem")
+                        .WithMany()
+                        .HasForeignKey("foodItemId");
 
                     b.Navigation("foodItem");
-
-                    b.Navigation("Meal");
-                });
-
-            modelBuilder.Entity("RKalkyl.Domain.FoodItem", b =>
-                {
-                    b.Navigation("Ingredients");
                 });
 
             modelBuilder.Entity("RKalkyl.Domain.Meal", b =>

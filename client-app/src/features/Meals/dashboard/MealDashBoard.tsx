@@ -2,49 +2,49 @@ import React from 'react'
 import { Grid } from 'semantic-ui-react'
 import { FoodItem } from '../../../app/models/foodItem'
 import { Ingredient } from '../../../app/models/ingredient'
-import { Recepie } from '../../../app/models/recepie'
+import { Meal } from '../../../app/models/meal'
 import MealDetails from '../details/MealDetails'
-import RecepieList from './RecepieList'
+import MealList from './MealList'
 
 interface Props {
-    recepies: Recepie[];
+    meals: Meal[];
     foodItems: FoodItem[];
-    selectedRecepie: Recepie | undefined;
-    selectRecepie: (id: string) => void; 
-    cancelSelectRecepie: () => void;
-    deleteIngredient: (recepieId: string, ingredientId: string) => void;
-    addOrEditIngredient: (recepieId: string, ingredient: Ingredient) => void;
+    selectedMeal: Meal | undefined;
+    selectMeal: (id: string) => void; 
+    cancelSelectMeal: () => void;
+    deleteIngredient: (mealId: string, ingredientId: string) => void;
+    addOrEditIngredient: (mealId: string, ingredient: Ingredient) => void;
 }
 
-export default function RecepieDashBoard({recepies, 
+export default function MealDashBoard({meals, 
                                           foodItems, 
-                                          selectedRecepie, 
-                                          selectRecepie, 
-                                          cancelSelectRecepie, 
+                                          selectedMeal, 
+                                          selectMeal, 
+                                          cancelSelectMeal, 
                                           deleteIngredient, 
                                           addOrEditIngredient} : Props){
     return (
 <>
 
 
-{!selectedRecepie &&
+{!selectedMeal &&
         <Grid>
             <Grid.Column width='8'>
-                <RecepieList recepies={recepies} selectRecepie={selectRecepie}/>
+                <MealList meals={meals} selectMeal={selectMeal}/>
             </Grid.Column>
 
         </Grid>}
-        {selectedRecepie &&
+        {selectedMeal &&
         <Grid>
             <Grid.Column width='4'>
-                <RecepieList recepies={recepies} selectRecepie={selectRecepie}/>
+                <MealList meals={meals} selectMeal={selectMeal}/>
             </Grid.Column>
             <Grid.Column width='12'>
-                {selectedRecepie &&
+                {selectedMeal &&
                 <MealDetails 
-                    recepie={selectedRecepie} 
+                    meal={selectedMeal} 
                     foodItems={foodItems} 
-                    cancelSelectRecepie={cancelSelectRecepie}
+                    cancelSelectMeal={cancelSelectMeal}
                     deleteIngredient={deleteIngredient}
                     addOrEditIngredient={addOrEditIngredient}
                 />}

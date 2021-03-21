@@ -30,7 +30,7 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateFoodItem(Guid id, FoodItem foodItem)
         {
-            foodItem.Id = id;
+            foodItem.FoodItemId = id;
             return Ok( await Mediator.Send(new Edit.Command(){FoodItem = foodItem}));
         }
 
