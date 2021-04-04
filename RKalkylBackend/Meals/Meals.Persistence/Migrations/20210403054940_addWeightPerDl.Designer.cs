@@ -3,14 +3,16 @@ using System;
 using Meals.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Meals.Persistence.Migrations
 {
     [DbContext(typeof(MealsDataContext))]
-    partial class MealsDataContextModelSnapshot : ModelSnapshot
+    [Migration("20210403054940_addWeightPerDl")]
+    partial class addWeightPerDl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

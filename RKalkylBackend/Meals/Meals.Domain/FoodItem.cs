@@ -12,6 +12,10 @@ namespace Meals.Domain
 
         public ICollection<Ingredient> Ingredients { get; set; }
 
+        public int WeightPerItem { get; set; }
+
+        public int WeightPerDl { get; set; }
+
         public string Name { get; set; }
 
         public double Protein { get; set; }

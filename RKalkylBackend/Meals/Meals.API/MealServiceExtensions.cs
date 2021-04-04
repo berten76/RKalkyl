@@ -2,9 +2,12 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-//using Persistance;
 using MediatR;
 using Meals.Persistence;
+using Meals.Application.FoodItems;
+using System.Reflection;
+using Meals.Application.Core;
+using Meals.Application;
 
 namespace Meals.API
 {
@@ -13,13 +16,8 @@ namespace Meals.API
     {
         public static IServiceCollection AddMealServices(this IServiceCollection services, IConfiguration config)
         {
-
-            //services.AddSwaggerGen(c =>
-            //{
-            //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
-            //});
             services.AddPersistenceService(config);
-        
+            services.AddApplicationServices();
             //services.AddCors(opt =>
             //{
             //    opt.AddPolicy("CorsPolicy", polisy =>
@@ -27,8 +25,8 @@ namespace Meals.API
             //        polisy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:3000");
             //    });
             //});
-          //  services.AddMediatR(typeof(List.Handler).Assembly);
-          //  services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+            services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+            services.AddMediatR(typeof(List.Handler).Assembly);
             return services;
         }
     }

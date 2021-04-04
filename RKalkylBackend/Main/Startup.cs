@@ -14,6 +14,8 @@ using System.Reflection;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Meals.API;
+using Controllers;
+//using Controllers;
 
 namespace Main
 {
@@ -32,15 +34,32 @@ namespace Main
             
             services.AddControllers();
 
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", polisy =>
+                {
+                    polisy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:3000");
+                });
+            });
+
             var c = Configuration.GetConnectionString("DefaultConnection");
+            // services.AddAutoMapper(typeof(Application.Core.MappingProfiles).Assembly);
 
+
+
+            services.AddMediatR(
+                Assembly.GetExecutingAssembly());//,
+                                                 // typeof(Meals.API.FoodItemsController).Assembly,
+                                                 //typeof(Meals.Application.FoodItems.List.Handler).Assembly);
+            services.AddControllerServices(Configuration);
             services.AddMealServices(Configuration);
-
-            services.AddMediatR(typeof(Startup).Assembly);
+            //services.AddMediatR(typeof(Startup).Assembly);
 
             var assembly = Assembly.GetAssembly(typeof(Meals.API.MealsController));
 
             services.AddControllers().PartManager.ApplicationParts.Add(new AssemblyPart(assembly));
+
+           
 
             services.AddSwaggerGen(c =>
             {
@@ -59,6 +78,8 @@ namespace Main
             }
 
             app.UseRouting();
+
+            app.UseCors("CorsPolicy");
 
             app.UseAuthorization();
 

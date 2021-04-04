@@ -62,16 +62,24 @@ namespace Meals.Persistence
             int count = context.FoodItems.Count();
             if (context.FoodItems.Any())
             {
-                return;
-                //context.FoodItems.RemoveRange(context.FoodItems);
+                //return;
+                //context.FoodItems = new  
                 //await context.SaveChangesAsync();
+                context.FoodItems.RemoveRange(context.FoodItems);
+                await context.SaveChangesAsync();
             }
-            //Livsmedelsnamn;Livsmedelsnummer;Energi (kcal);Energi (kJ);Kolhydrater (g);Fett (g);Protein
-            string file = @"C:\Users\sechber7\source\repos\private\RKalkyl\RKalkyl\Persistance\LivsmedelsDB_202102212044.csv";
+
+            var foodItems = ReadFoodItems();
+            await context.FoodItems.AddRangeAsync(foodItems);
+            await context.SaveChangesAsync();
+        }
+        public static List<FoodItem> ReadFoodItems()
+        {
+            string file = @"C:\Users\sechber7\source\repos\private\RKalkyl\RKalkyl\Persistance\LivsmedelsDB_202102212044_ordered2.csv";
             var foodItems = new List<FoodItem>();
             if (File.Exists(file))
             {
-                string[] lines = System.IO.File.ReadAllLines(file);
+                string[] lines = System.IO.File.ReadAllLines(file, Encoding.GetEncoding("ISO-8859-1"));
 
                 for (int i = 1; i < lines.Length; i++)
                 {
@@ -79,48 +87,19 @@ namespace Meals.Persistence
                     var foodItem = new FoodItem()
                     {
                         Name = line[0],
-                        Carbs = double.TryParse(line[4], out double carb) ? carb : 0,
-                        Fat = double.TryParse(line[5], out double fat) ? fat : 0,
-                        Protein = double.TryParse(line[6], out double protein) ? protein : 0,
+                        WeightPerItem = int.TryParse(line[1], out int weightPerItem) ? weightPerItem : 0,
+                        WeightPerDl = int.TryParse(line[2], out int weightPerDl) ? weightPerDl : 0,
+                        Carbs = double.TryParse(line[6], out double carb) ? carb : 0,
+                        Fat = double.TryParse(line[7], out double fat) ? fat : 0,
+                        Protein = double.TryParse(line[8], out double protein) ? protein : 0,
                     };
                     foodItems.Add(foodItem);
                 }
             }
-            // var foodItems = new List<FoodItem>
-            // {
-            //     new FoodItem
-            //     {
-            //         Name = "potatis",
-            //         Protein = 0,
-            //         Carbs = 15,
-            //         Fat = 0
-            //     },
-            //     new FoodItem
-            //     {
-            //         Name = "kyckling",
-            //         Protein = 20,
-            //         Carbs = 0,
-            //         Fat = 5
-            //     },
-            //    new FoodItem
-            //     {
-            //         Name = "banan",
-            //         Protein = 2,
-            //         Carbs = 20,
-            //         Fat = 0
-            //     },
-            //     new FoodItem
-            //     {
-            //         Name = "olivolja",
-            //         Protein = 0,
-            //         Carbs = 0,
-            //         Fat = 100
-            //     },
 
-            //};
-
-            await context.FoodItems.AddRangeAsync(foodItems);
-            await context.SaveChangesAsync();
+            return foodItems;
         }
     }
+
 }
+//dotnet ef migrations add Name -p Meals.Persistence -s ..\Main

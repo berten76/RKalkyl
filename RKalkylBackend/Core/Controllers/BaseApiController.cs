@@ -19,15 +19,14 @@ namespace Controllers
     public class BaseApiController : ControllerBase
     {
         private IMediator _mediator;
-
-        //public BaseApiController()
-        //{
-        //}
+        protected IMediator Mediator => _mediator;
+        public BaseApiController()
+        {
+        }
 
         public BaseApiController(IMediator mediator)
         {
             _mediator = mediator;
         }
-
     }
 }

@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.4">
       <PrivateAssets>all</PrivateAssets>
@@ -15,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Core\Controllers\Controllers.csproj" />
     <ProjectReference Include="..\Meals\Meals.API\Meals.API.csproj" />
     <ProjectReference Include="..\Meals\Meals.Persistence\Meals.Persistence.csproj" />
   </ItemGroup>
