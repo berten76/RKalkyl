@@ -1,18 +1,24 @@
+import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { Button, Item, Label, Segment } from 'semantic-ui-react';
 import { Meal } from '../../../app/models/meal';
+import { useStore } from '../../../app/stores/store';
 
-interface Props {
-    meals: Meal[];
-    selectMeal: (mealId: string) => void; 
-}
 
-export default function MealList({meals, selectMeal}: Props)
-{
+export default observer(function MealList() {
+    const {mealStore} = useStore();
+    
+    function HandleDeleteMeal(mealId: string) {
+        mealStore.deleteMeal(mealId);
+        if (mealStore.selectedMeal?.mealId === mealId) {
+            mealStore.cancelSelectedMeal();
+        }
+    }
+
     return (
         <Segment>
             <Item.Group divided>
-                {meals.map(meal => (
+                {mealStore.meals.map(meal => (
                     
                     <Item key={meal.mealId}>
                         {console.log('meal.id')}
@@ -25,7 +31,13 @@ export default function MealList({meals, selectMeal}: Props)
                                 <div>Not impl</div>
                             </Item.Description>
                             <Item.Extra>
-                                <Button floated='right' content='View' color='blue' onClick={() => selectMeal(meal.mealId)} />
+                                <Button floated='right' content='View' color='blue' onClick={() => mealStore.selectMeal(meal.mealId)} />
+                                <Button 
+                                    floated='right'
+                                    content='Delete'
+                                    color='red'
+                                    onClick={() => HandleDeleteMeal(meal.mealId)}
+                                />
                                 <Label basic content="Not impl"/>
                             </Item.Extra>
                         </Item.Content>
@@ -34,4 +46,4 @@ export default function MealList({meals, selectMeal}: Props)
             </Item.Group>
         </Segment>
     )
-}
+})

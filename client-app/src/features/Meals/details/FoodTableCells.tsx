@@ -1,14 +1,19 @@
 import React from 'react';
 import { Button, Table } from 'semantic-ui-react';
 import { Ingredient } from '../../../app/models/ingredient';
+import { useStore } from '../../../app/stores/store';
 
 interface Props {
     ingredient: Ingredient;
-    deleteIngredient: (ingredientId: string) => void;
 }
 
-export default function FoodTableCells({ingredient, deleteIngredient}: Props){
+export default function FoodTableCells({ingredient}: Props){
+    const {mealStore} = useStore();
     
+    function HandleDelete(ingredientId: string) {
+        mealStore.deleteIngredient(ingredientId);
+    }
+      
     return (
         <>
             <Table.Cell >
@@ -19,7 +24,7 @@ export default function FoodTableCells({ingredient, deleteIngredient}: Props){
             </Table.Cell>
             <Table.Cell>g</Table.Cell>
             <Table.Cell>
-                <Button onClick={() => deleteIngredient(ingredient.id)}>Delete</Button>
+                <Button onClick={() => HandleDelete(ingredient.id)}>Delete</Button>
             </Table.Cell>
         </>
     )

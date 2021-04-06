@@ -13,7 +13,8 @@ namespace Meals.ApplicationTests.RecepieToMeal
     public class GetMealFromRecepieTest
     {
 
-        [TestCase("4 kycklingfiléer", "Kyckling bröst filé rå u. skinn", 165)]
+        [TestCase("4 kycklingfiléer", "Kyckling bröst filé rå u. skinn", 660)]
+        [TestCase("0.5 st Gul lök", "Lök gul", 50)]
         public void GetMealWithCandidatesTest(string recepie, string expectedFood, int expectedAmountInGram)
         {
             var foodItems = Seed.ReadFoodItems();

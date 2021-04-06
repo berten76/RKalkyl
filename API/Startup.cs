@@ -17,6 +17,7 @@ using MediatR;
 using RKalkyl.Application.FoodItems;
 using RKalkyl.Application.Core;
 using API.Extentions;
+using System.Reflection;
 
 namespace API
 {
@@ -33,6 +34,8 @@ namespace API
         {
             services.AddControllers();
             services.AddApplicationServices(_config);
+           // var assembly = Assembly.GetAssembly(typeof(RKalkyl.Application.))
+           //https://stackoverflow.com/questions/56185350/how-to-separate-asp-net-core-mvc-project-into-multiple-assembly-dll/56306380
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -20,6 +20,7 @@ namespace Meals.ApplicationTests.RecepieToMeal
         [TestCase("0,5 dl chilisås", "Chilisås tomat")]
         [TestCase("kycklingfilé(er)", "Kyckling bröst filé rå u. skinn")]
         [TestCase("potatis(ar)", "Potatis rå")]
+       // [TestCase("3 dl crème fraiche", "")]
         public void FoodItemFinder_returnsCorrectFoodItem(string foodIn, string expected)
         {
             var foodItems = Seed.ReadFoodItems();

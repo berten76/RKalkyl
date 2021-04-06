@@ -23,13 +23,6 @@ namespace RKalkyl.Application.FoodItems
 
             public async Task<List<FoodItem>> Handle(Query request, CancellationToken cancellationToken)
             {
-                // var values = new List<FoodItem>();
-                // var dbValues = await _context.FoodItems.ToListAsync();
-                // for(int i = 0; i < 20; i++)
-                // {
-                //     values.Add(dbValues[i]);
-                // }
-                // return values;
                 try
                 {
                 var items =  await _context.FoodItems.AsNoTracking().ToListAsync();

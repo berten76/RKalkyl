@@ -16,6 +16,8 @@ namespace RKalkyl.Application.Core
             CreateMap<Meal, MealDto>();
             CreateMap<Ingredient, IngredientDto>(); 
 
+            CreateMap<IngredientDto, Ingredient>(); 
+
            // CreateMap<FoodItemDto, FoodItem>();
            // CreateMap<MealDto, Meal>();
            // CreateMap<IngredientDto, Ingredient>()

@@ -18,6 +18,7 @@ namespace Meals.Domain
                 "l",
                 "tsk",
                 "msk",
+                "st"
             };
         }
     }

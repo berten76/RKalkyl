@@ -77,6 +77,7 @@ namespace Meals.Application.RecepieToMeal
                 else return -1;
             });
 
+            if (candidates.Count == 0) return new List<FoodItem>();
             var maxCandidateValue = candidates.Max(c => c.CandidatValue);
 
 

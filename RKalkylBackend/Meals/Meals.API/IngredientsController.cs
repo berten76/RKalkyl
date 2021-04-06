@@ -33,6 +33,7 @@ namespace Meals.API
             return Ok(await Mediator.Send(new Create.Command() { Ingredient = ingredient }));
         }
 
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteIngredient(Guid id)
         {

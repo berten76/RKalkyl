@@ -31,7 +31,7 @@ namespace Meals.Application.RecepieToMeal
                     returnvalue = foodItem.WeightPerDl * amount * 0.15;
                     break;
                 case "st":
-                    returnvalue = foodItem.WeightPerItem;
+                    returnvalue = foodItem.WeightPerItem * amount;
                     break;
             }
             return (int)Math.Round(returnvalue);

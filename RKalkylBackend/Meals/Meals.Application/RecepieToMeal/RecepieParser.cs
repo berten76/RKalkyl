@@ -35,7 +35,8 @@ namespace Meals.Application.RecepieToMeal
             double amount = 0;
             if (recepieLineSplit[0] != null)
             {
-                double.TryParse(recepieLineSplit[0], out amount);
+                var str = recepieLineSplit[0].Replace('.', ',');
+                double.TryParse(str, out amount);
             }
 
             if (amount == 0)

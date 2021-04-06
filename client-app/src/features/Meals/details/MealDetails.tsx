@@ -10,29 +10,20 @@ import FoodTableCells from './FoodTableCells';
 import { FoodName } from '../../../app/models/foodName';
 import FoodTableCellsInput from './FoodTableCellsInput';
 import { FoodItem } from '../../../app/models/foodItem';
+import { useStore } from '../../../app/stores/store';
+import { observer } from 'mobx-react-lite';
 
 interface Props {
-    meal: Meal;
     foodItems: FoodItem[]
-    cancelSelectMeal: () => void;
-    deleteIngredient: (MealId: string, ingredientId: string) => void;
-    addOrEditIngredient: (meald: string, ingredient: Ingredient) => void;
 }
-// interface op {
-//     value: string;
-//     text: string;
-// }
 
-export default function MealDetails({meal, foodItems, cancelSelectMeal, deleteIngredient, addOrEditIngredient}: Props){
-    
-   // const [searchQuery, SetsearchQuery] = useState<string>('');
-   // const [selectedOption, SetSelectedOption] = useState<any>(null);
+
+export default observer(function MealDetails({foodItems}: Props){
+
+    const {mealStore} = useStore();
     const [selectedIngredientId, setSelectedIngredientId] = useState<string>('');
     
-    //const [ingredients, Setingredients] = useState<Ingredient[]>(recepie.ingredients);
-   // let ingredients = recepie.ingredients;
-   // if(recepie){
-    let ingredients = (meal.ingredients.map(i => {
+    let ingredients = (mealStore.selectedMeal?.ingredients.map(i => {
         
         if(i.id === selectedIngredientId){
             i.selected = true;
@@ -42,7 +33,6 @@ export default function MealDetails({meal, foodItems, cancelSelectMeal, deleteIn
         }
         return i;
     })) ;
-//}
 
       function FilterOptions(options:any[], query: string) {
           return options.filter((f: FoodName)=> f.value.toLowerCase()?.startsWith(query.toLowerCase()));
@@ -52,21 +42,18 @@ export default function MealDetails({meal, foodItems, cancelSelectMeal, deleteIn
           setSelectedIngredientId(id);
       };
 
-      function HandleDeleteIngredient(ingredientId: string) {
-            deleteIngredient(meal.mealId, ingredientId);
-      }
-      function HandleAddOrEditIngredient(ingredient: Ingredient) {
-        addOrEditIngredient(meal.mealId, ingredient);
-      }
 
       let ddd= foodItems.map((fName) =>{
         return { value: fName.name, text: fName.name, value2: fName}
     });
 
+    if(!mealStore.selectedMeal) return <h2>Error</h2>
+   
+
     return (
         <Card fluid>
             <Card.Content>
-            <Card.Header>{meal.name}</Card.Header>
+            <Card.Header>{mealStore.selectedMeal.name}</Card.Header>
             <Card.Meta>
                 <span className='date'>Joined in 2015</span>
             </Card.Meta>
@@ -82,7 +69,7 @@ export default function MealDetails({meal, foodItems, cancelSelectMeal, deleteIn
     </Table.Header>
 
     <Table.Body>
-    {ingredients.map(i => (
+    {ingredients && ingredients.map(i => (
       
          <Table.Row key={i.foodItem.name}  onClick={()=> {HandleOnFocus(i.id)}} >
 
@@ -90,14 +77,11 @@ export default function MealDetails({meal, foodItems, cancelSelectMeal, deleteIn
                                 ingredient={i}
                                 foodNames={ddd}
                                 filterOptions={FilterOptions}
-                                deleteIngredient={HandleDeleteIngredient}
-                                addOrEditIngredient={HandleAddOrEditIngredient}
+                                deleteIngredient={true}
                             />
-     
-           
             }
             {!i.selected && 
-                <FoodTableCells ingredient={i} deleteIngredient={HandleDeleteIngredient}/>
+                <FoodTableCells ingredient={i} />
             }
        </Table.Row>
     ))}
@@ -107,8 +91,7 @@ export default function MealDetails({meal, foodItems, cancelSelectMeal, deleteIn
             ingredient={undefined}
             foodNames={ddd}
             filterOptions={FilterOptions}
-            deleteIngredient={undefined}
-            addOrEditIngredient={HandleAddOrEditIngredient}
+            deleteIngredient={false}
             />
        </Table.Row>
     </Table.Body>
@@ -117,11 +100,12 @@ export default function MealDetails({meal, foodItems, cancelSelectMeal, deleteIn
             </Card.Description>
             </Card.Content>
             <Card.Content extra>
-                <Button onClick={() => cancelSelectMeal()} basic color='grey' content='Close'/>
+                <Button onClick={() => mealStore.setPasteMode(true)} basic color='grey' content='Paste a recepie'/>
+                <Button onClick={() => mealStore.cancelSelectedMeal()} basic color='grey' content='Close'/>
             </Card.Content>
         </Card>
     )
-}
+});
 
 
  //{{foodItem: {name : '', id : '', protein: 0, fat:0, carbs:0}, id:'', amountInGram:0, protein: 0, fat:0, carbs:0, selected:false}}

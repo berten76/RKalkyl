@@ -20,10 +20,16 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateIngredient(Ingredient ingredient)
+        public async Task<IActionResult> CreateIngredient(IngredientDto ingredient)
         {
 
             return Ok( await Mediator.Send(new Create.Command(){Ingredient = ingredient}));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteIngredient(Guid id)
+        { 
+            return Ok(await Mediator.Send(new Delete.Command(){Id = id}));
         }
     }
 }

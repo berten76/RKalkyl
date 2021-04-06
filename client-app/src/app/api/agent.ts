@@ -3,6 +3,7 @@ import { request } from 'node:http';
 import { FoodItem } from '../models/foodItem';
 import { Meal } from '../models/meal';
 import { Ingredient } from '../models/ingredient';
+import { Recepie } from '../models/recepie';
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
@@ -35,10 +36,16 @@ const FoodItems = {
     list: () => requests.get<FoodItem[]>('/FoodItems')
 }
 
+const ParseRecepie = {
+    parse: (mealId: string, recepie: Recepie) => axios.post<Ingredient[]>(`/mealParser/${mealId}`, recepie)
+   // parse: (recepie: string) => axios.put(`/mealParser/${'tt'}`, recepie)
+    //parse: (recepie: string) => axios.get<string>(`/mealParser/${recepie}`)
+}
 const agent = {
     Meals,
     Ingredients,
-    FoodItems
+    FoodItems,
+    ParseRecepie
 }
 
 export default agent;
