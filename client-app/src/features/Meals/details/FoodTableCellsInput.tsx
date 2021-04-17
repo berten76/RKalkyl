@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Button, Dropdown, DropdownProps, Input, InputOnChangeData, Table } from 'semantic-ui-react';
-//import { FoodItem } from '../../../app/models/foodItem';
 import { FoodName } from '../../../app/models/foodName';
 import { Ingredient } from '../../../app/models/ingredient';
 import { useStore } from '../../../app/stores/store';
@@ -82,7 +81,7 @@ export default function FoodTableCellsInput({ ingredient, foodNames, filterOptio
 
     return (
         <>
-            <Table.Cell style={{padding: '0'}}>
+            <Table.Cell style={{ padding: '0' }}>
                 <Dropdown
                     floating
                     fluid
@@ -93,7 +92,7 @@ export default function FoodTableCellsInput({ ingredient, foodNames, filterOptio
                     onChange={HandleOnChange}
                 />
             </Table.Cell>
-            <Table.Cell style={{padding: '0'}}>
+            <Table.Cell style={{ padding: '0' }}>
                 <Input
                     onKeyDown={(e: any) => onKeyPress(e)}
                     defaultValue={ingredientState.amountInGram}
@@ -101,13 +100,12 @@ export default function FoodTableCellsInput({ ingredient, foodNames, filterOptio
                 />
             </Table.Cell>
             <Table.Cell>g</Table.Cell>
-            <Table.Cell style={{padding: '0'}} textAlign='center' >
+            <Table.Cell style={{ padding: '0' }} textAlign='center' >
 
-            {deleteIngredient && <Button onClick={() => HandleDelete(ingredientState.id)} color='red'>Delete</Button>}
-            {!deleteIngredient && <Button style={{ width: "6em" }} color='green'  onClick={() => HandleOnAdd()} >Add</Button>}
+                {deleteIngredient && <Button onClick={() => HandleDelete(ingredientState.id)} color='red'>Delete</Button>}
+                {!deleteIngredient && <Button style={{ width: "6em" }} color='green' onClick={() => HandleOnAdd()} >Add</Button>}
             </Table.Cell>
         </>
     )
 }
-// {addIngredient && <Button onClick={() => HandleAddIngredient(ingredientState)}>Add</Button>}
 

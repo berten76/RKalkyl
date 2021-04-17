@@ -1,5 +1,4 @@
 import axios, { AxiosResponse } from 'axios';
-import { request } from 'node:http';
 import { FoodItem } from '../models/foodItem';
 import { Meal } from '../models/meal';
 import { Ingredient } from '../models/ingredient';

@@ -1,9 +1,8 @@
-import { action, makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Meal } from "../models/meal";
 import { v4 as uuid } from 'uuid';
 import { Ingredient } from "../models/ingredient";
-import { Recepie } from "../models/recepie";
 import { FoodItem } from "../models/foodItem";
 export default class MealStore {
 
@@ -23,13 +22,18 @@ export default class MealStore {
         this.setLoadingInitial(true);
         try {
             const meals = await agent.Meals.list();
-            meals.forEach(meal => {
-                this.meals.push(meal);
+            runInAction(() => {
+                this.meals = [];
+                meals.forEach(meal => {
+                    this.meals.push(meal);
+                })
+                this.setLoadingInitial(false);
             })
-            this.setLoadingInitial(false);
         } catch (error) {
             console.log(error);
-            this.setLoadingInitial(false);
+            runInAction(() => {
+                this.setLoadingInitial(false);
+            });
         }
     }
 
@@ -53,9 +57,10 @@ export default class MealStore {
     }
 
     loadMeal = async (id: string) => {
+
         let meal = this.getMeal(id);
         if (meal) {
-           this.selectedMeal = meal;
+            this.selectedMeal = meal;
         } else {
             this.loading = true;
             try {
@@ -63,10 +68,10 @@ export default class MealStore {
                 runInAction(() => {
                     this.selectedMeal = meal;
                     if (meal) {
-                        if(!this.meals.find(m => m.mealId === meal?.mealId)){
+                        if (!this.meals.find(m => m.mealId === meal?.mealId)) {
                             this.meals.push(meal);
                         }
-                        
+
                     }
                     this.setLoadingInitial(false);
                 })

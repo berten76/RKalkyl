@@ -1,16 +1,13 @@
 import { observer } from 'mobx-react-lite';
-import React, { useEffect } from 'react';
-import { Card, Header, Image, Table } from 'semantic-ui-react'
+import React from 'react';
+import { Card, Header, Table } from 'semantic-ui-react'
 import { Meal } from '../../../app/models/meal';
-import { useStore } from '../../../app/stores/store';
 
 interface Props {
     meal: Meal;
 }
 
 export default observer(function MarcoNutrientDisplay({ meal }: Props) {
-
-    const { mealStore } = useStore();
 
     let energy = 0;
     let protein = 0;

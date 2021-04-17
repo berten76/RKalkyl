@@ -23,7 +23,7 @@ export default function FoodTableCells({ ingredient }: Props) {
                 {ingredient.amountInGram}
             </Table.Cell>
             <Table.Cell>g</Table.Cell>
-            <Table.Cell style={{padding: '0'}}  textAlign='center'>
+            <Table.Cell style={{ padding: '0' }} textAlign='center'>
                 <Button onClick={() => HandleDelete(ingredient.id)} color='red'>Delete</Button>
             </Table.Cell>
         </>

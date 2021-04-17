@@ -1,19 +1,12 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { Button, Card, Table } from 'semantic-ui-react';
-//import { Meal} from '../../../app/models/meal';
-//import SelectSearch from 'react-select-search';
-//import Select from 'react-select';
-//import { FoodItem } from '../../../app/models/foodItem';
-//import { Ingredient } from '../../../app/models/ingredient';
 import FoodTableCells from './FoodTableCells';
 import { FoodName } from '../../../app/models/foodName';
 import FoodTableCellsInput from './FoodTableCellsInput';
-//import { FoodItem } from '../../../app/models/foodItem';
 import { useStore } from '../../../app/stores/store';
 import { observer } from 'mobx-react-lite';
 import { useParams } from 'react-router';
-import { stringify } from 'uuid';
 import LoadingComponent from '../../../app/layout/LoadingComponent';
 import PasteDialog from './PasteDialog';
 import { useHistory } from 'react-router-dom';
@@ -25,7 +18,6 @@ export default observer(function MealDetails() {
     const history = useHistory();
     const { mealStore } = useStore();
     const { selectedMeal, loadMeal, lodingInitial } = mealStore;
-    //const {foodItems} = mealStore;
     const [selectedIngredientId, setSelectedIngredientId] = useState<string>('');
     const [pasteMode, setPasteMode] = useState<Boolean>(false);
     const { id } = useParams<{ id: string }>();
@@ -34,7 +26,6 @@ export default observer(function MealDetails() {
         if (id) loadMeal(id);
     }, [id, loadMeal]);
 
-    console.log('hit')
     let ingredients = (selectedMeal?.ingredients.map(i => {
 
         if (i.id === selectedIngredientId) {
@@ -131,6 +122,3 @@ export default observer(function MealDetails() {
         </Card>
     )
 });
-
-
- //{{foodItem: {name : '', id : '', protein: 0, fat:0, carbs:0}, id:'', amountInGram:0, protein: 0, fat:0, carbs:0, selected:false}}
