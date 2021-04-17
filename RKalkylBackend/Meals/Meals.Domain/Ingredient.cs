@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Meals.Domain
 {
     public class Ingredient
     {
-        [Key]
+       // [Key]
         public Guid Id { get; set; }
         public Guid MealId { get; set; }
         public Meal Meal { get; set; }

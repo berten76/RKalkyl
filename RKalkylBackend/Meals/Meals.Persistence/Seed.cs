@@ -75,7 +75,8 @@ namespace Meals.Persistence
         }
         public static List<FoodItem> ReadFoodItems()
         {
-            string file = @"C:\Users\sechber7\source\repos\private\RKalkyl\RKalkyl\Persistance\LivsmedelsDB_202102212044_ordered2.csv";
+            string file = @"C:\Users\sechber7\source\repos\private\RKalkyl\RKalkylBackend\Meals\Meals.Persistence\LivsmedelsDB_202102212044_ordered2.csv";
+            //string file = @"C:\Users\sechber7\source\repos\private\RKalkyl\RKalkyl\Persistance\LivsmedelsDB_202102212044_ordered2.csv";
             var foodItems = new List<FoodItem>();
             if (File.Exists(file))
             {

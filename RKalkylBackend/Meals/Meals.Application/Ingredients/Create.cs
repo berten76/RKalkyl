@@ -32,6 +32,7 @@ namespace Meals.Application.Ingredients
 
                     var ingredient = new Ingredient()
                     {
+                        Id = cmd.Ingredient.Id,
                         MealId = cmd.Ingredient.MealId,
                         FoodItemId = cmd.Ingredient.foodItem.FoodItemId,
                         AmountInGram = cmd.Ingredient.AmountInGram

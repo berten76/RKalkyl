@@ -10,7 +10,7 @@ namespace Meals.Application.Dtos
     {
         public Guid MealId { get; set; }
         public string Name { get; set; }
-
+        public DateTime Date { get; set; }
         public ICollection<IngredientDto> Ingredients { get; set; }
     }
 }

@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\RKalkylMath\RKalkylMath.csproj" />
     <ProjectReference Include="..\Meals.Domain\Meals.Domain.csproj" />
     <ProjectReference Include="..\Meals.Persistence\Meals.Persistence.csproj" />
   </ItemGroup>

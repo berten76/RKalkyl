@@ -23,7 +23,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Main", "Main\Main.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meals.API", "Meals\Meals.API\Meals.API.csproj", "{14C6909C-033D-45D3-A7B9-B3BC150C977B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meals.ApplicationTests", "Meals\Meals.ApplicationTests\Meals.ApplicationTests.csproj", "{8F40183E-F43D-44B8-87C9-093BF37BEFBB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meals.ApplicationTests", "Meals\Meals.ApplicationTests\Meals.ApplicationTests.csproj", "{8F40183E-F43D-44B8-87C9-093BF37BEFBB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{0D3D2DA2-F2AD-46C6-8578-5995751DBD2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RKalkylMath", "Common\RKalkylMath\RKalkylMath.csproj", "{7CAD4099-2059-4280-B263-79E5EE3CAE71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RKalkylMathTests", "Common\RKalkylMathTests\RKalkylMathTests.csproj", "{C108E4ED-B8AB-48D0-82C6-F4437D6DDEBE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +69,14 @@ Global
 		{8F40183E-F43D-44B8-87C9-093BF37BEFBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F40183E-F43D-44B8-87C9-093BF37BEFBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F40183E-F43D-44B8-87C9-093BF37BEFBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CAD4099-2059-4280-B263-79E5EE3CAE71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CAD4099-2059-4280-B263-79E5EE3CAE71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CAD4099-2059-4280-B263-79E5EE3CAE71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CAD4099-2059-4280-B263-79E5EE3CAE71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C108E4ED-B8AB-48D0-82C6-F4437D6DDEBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C108E4ED-B8AB-48D0-82C6-F4437D6DDEBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C108E4ED-B8AB-48D0-82C6-F4437D6DDEBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C108E4ED-B8AB-48D0-82C6-F4437D6DDEBE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -76,6 +90,8 @@ Global
 		{B5DD77C5-C28C-4415-B357-A19C68289DD5} = {EF09E29F-1842-4691-822F-F2B00FB6A108}
 		{14C6909C-033D-45D3-A7B9-B3BC150C977B} = {EF09E29F-1842-4691-822F-F2B00FB6A108}
 		{8F40183E-F43D-44B8-87C9-093BF37BEFBB} = {EF09E29F-1842-4691-822F-F2B00FB6A108}
+		{7CAD4099-2059-4280-B263-79E5EE3CAE71} = {0D3D2DA2-F2AD-46C6-8578-5995751DBD2B}
+		{C108E4ED-B8AB-48D0-82C6-F4437D6DDEBE} = {0D3D2DA2-F2AD-46C6-8578-5995751DBD2B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CCA372F8-6899-41A0-98A4-43FCF6B92B80}

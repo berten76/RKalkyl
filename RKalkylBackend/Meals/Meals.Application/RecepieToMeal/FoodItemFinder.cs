@@ -65,14 +65,21 @@ namespace Meals.Application.RecepieToMeal
             //        }
             //    }
             //}
-
+            FoodItemCandidate A, B;
+            double hit = 0.0;
+            int la, lb;
             candidates.Sort((a, b) =>
             {
+                hit = 0;
+                A = a;
+                B = b;
+                hit = 1;
                 if (a.CandidatValue == b.CandidatValue)
                 {
                     if (a.FoodItem.Name.Length > b.FoodItem.Name.Length) return 1;
                     else return -1;
                 }
+                hit = 3;
                 if (a.CandidatValue < b.CandidatValue) return 1;
                 else return -1;
             });

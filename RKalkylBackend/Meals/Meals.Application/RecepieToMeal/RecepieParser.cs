@@ -36,7 +36,14 @@ namespace Meals.Application.RecepieToMeal
             if (recepieLineSplit[0] != null)
             {
                 var str = recepieLineSplit[0].Replace('.', ',');
-                double.TryParse(str, out amount);
+                if (RKalkylMath.Fractional.IsFractional(str))
+                {
+                    amount = RKalkylMath.Fractional.ToDecimal(str);
+                }
+                else
+                {
+                    double.TryParse(str, out amount);
+                }
             }
 
             if (amount == 0)

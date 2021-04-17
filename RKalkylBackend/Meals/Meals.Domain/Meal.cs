@@ -9,6 +9,8 @@ namespace Meals.Domain
         public Guid MealId { get; set; }
         public string Name { get; set; }
 
+        public DateTime Date { get; set; }
+
         public ICollection<Ingredient> Ingredients { get; set; }
     }
 }

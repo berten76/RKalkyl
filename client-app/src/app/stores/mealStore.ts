@@ -1,12 +1,12 @@
-import { makeAutoObservable, runInAction} from "mobx";
+import { action, makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Meal } from "../models/meal";
-import {v4 as uuid} from 'uuid';
+import { v4 as uuid } from 'uuid';
 import { Ingredient } from "../models/ingredient";
-import {Recepie} from "../models/recepie";
+import { Recepie } from "../models/recepie";
 import { FoodItem } from "../models/foodItem";
 export default class MealStore {
-  
+
     meals: Meal[] = [];
     foodItems: FoodItem[] = [];
     selectedMeal: Meal | undefined = undefined;
@@ -43,13 +43,57 @@ export default class MealStore {
                 })
                 this.setLoadingInitial(false);
             })
-            
+
         } catch (error) {
             console.log(error);
             runInAction(() => {
                 this.setLoadingInitial(false);
             })
         }
+    }
+
+    loadMeal = async (id: string) => {
+        let meal = this.getMeal(id);
+        if (meal) {
+           this.selectedMeal = meal;
+        } else {
+            this.loading = true;
+            try {
+                meal = await agent.Meals.details(id);
+                runInAction(() => {
+                    this.selectedMeal = meal;
+                    if (meal) {
+                        if(!this.meals.find(m => m.mealId === meal?.mealId)){
+                            this.meals.push(meal);
+                        }
+                        
+                    }
+                    this.setLoadingInitial(false);
+                })
+            } catch (error) {
+                console.log(error);
+                runInAction(() => {
+                    this.setLoadingInitial(false);
+                })
+            }
+        }
+    }
+
+    get mealsByDate() {
+        return Array.from(this.meals).sort((a, b) =>
+            a.date!.getTime() - b.date!.getTime());
+    }
+
+    /* get groupedMeals() {
+         return Object.entries(
+             this.meals.reduce((meals, meal) => {
+                 const
+             })
+         )
+     }*/
+
+    private getMeal = (id: string) => {
+        return this.meals.find(m => m.mealId === id);
     }
 
     setPasteMode = (mode: boolean) => {
@@ -71,47 +115,52 @@ export default class MealStore {
     }
 
     getSelectedMeal = (id: string) => {
-        if(id === ''){
-          return undefined;
+        if (id === '') {
+            return undefined;
         }
         return this.meals.find(r => r.mealId === id);
-      }
+    }
 
-      createMeal = async () => {
+    createMeal = async () => {
         this.loading = true;
+        console.log("create meal inside 1");
         let newMeal = {
-          mealId: uuid(),
-          name: 'New meal',
-          ingredients: []
+            mealId: uuid(),
+            name: 'New meal',
+            date: new Date(Date.now()),
+            ingredients: []
         };
-        
+        console.log("create meal inside 2");
         try {
             await agent.Meals.create(newMeal);
             runInAction(() => {
+                console.log("create meal inside 3");
                 this.meals.push(newMeal);
                 this.selectedMeal = newMeal;
                 this.editMode = false;
                 this.loading = false;
+                console.log("create meal inside 4");
+
             })
         } catch (error) {
+            console.log("create meal inside err1");
             console.log(error);
             runInAction(() => {
                 this.loading = false;
             })
         }
-        
-        //setMeals([...meals, newMeal])
-      }
+        console.log("create meal inside 5");
+    }
 
-      addIngredient = async (ingredient: Ingredient) => {
+    addIngredient = async (ingredient: Ingredient) => {
         let mealId = this.selectedMeal?.mealId;
-        if(!mealId){
+        if (!mealId) {
             console.log('could not add ingredient,no meal selected')
         }
         if (ingredient.id) {
             console.log('could not add ingredient, id is defined')
             return;
-        }  
+        }
 
         this.loading = true;
 
@@ -120,77 +169,76 @@ export default class MealStore {
             await agent.Ingredients.create(ingredient);
             runInAction(() => {
                 let meal = this.meals.find(r => r.mealId === mealId);
-                meal?.ingredients.push({...ingredient, id: uuid()})
+                meal?.ingredients.push(ingredient);
             })
-          } catch (error) {
-              console.log(error);
-          }
+        } catch (error) {
+            console.log(error);
+        }
 
-      }
-      editIngredient = async (ingredient: Ingredient) => {
+    }
+    editIngredient = async (ingredient: Ingredient) => {
         let mealId = this.selectedMeal?.mealId;
-        if(!mealId){
+        if (!mealId) {
             console.log('could not edit ingredient,no meal selected')
         }
         if (!ingredient.id) {
             console.log('could not edit ingredient, id not defined')
             return;
-        }  
+        }
         this.loading = true;
-       
-      
+
+
         try {
-        await agent.Ingredients.update(ingredient);
-        runInAction(() => {
-            let updatedIngredients = new Array<Ingredient>();
-            let meal = this.meals.find(r => r.mealId === mealId);
-            if (!meal) {
-                console.log('could not edit ingredient,could not find meal')
-                this.loading = false;
-                return;
-            }
-            meal.ingredients.forEach(i => {
-                if(i.id !== ingredient.id){
-                    updatedIngredients.push(i);
+            await agent.Ingredients.update(ingredient);
+            runInAction(() => {
+                let updatedIngredients = new Array<Ingredient>();
+                let meal = this.meals.find(r => r.mealId === mealId);
+                if (!meal) {
+                    console.log('could not edit ingredient,could not find meal')
+                    this.loading = false;
+                    return;
                 }
-                else{
-                    updatedIngredients.push(ingredient);
-                }
-            });
-            meal.ingredients = updatedIngredients;
-        })
+                meal.ingredients.forEach(i => {
+                    if (i.id !== ingredient.id) {
+                        updatedIngredients.push(i);
+                    }
+                    else {
+                        updatedIngredients.push(ingredient);
+                    }
+                });
+                meal.ingredients = updatedIngredients;
+            })
         } catch (error) {
             console.log(error);
         }
         this.loading = false;
-      }
+    }
 
     deleteIngredient = async (ingredientId: string) => {
         try {
-           await agent.Ingredients.delete(ingredientId);
+            await agent.Ingredients.delete(ingredientId);
             runInAction(() => {
                 if (!this.selectedMeal) return;
                 this.selectedMeal.ingredients = [...this.selectedMeal.ingredients.filter(i => i.id !== ingredientId)];
             });
 
         } catch (error) {
-                console.log(error);
+            console.log(error);
         }
     }
 
     deleteMeal = async (mealId: string) => {
         this.loading = true
         try {
-           await agent.Meals.delete(mealId);
+            await agent.Meals.delete(mealId);
             runInAction(() => {
                 this.meals = [...this.meals.filter(m => m.mealId !== mealId)];
             });
 
         } catch (error) {
-                console.log(error);
+            console.log(error);
         }
-        finally
-        {
+        finally {
             runInAction(() => {
                 this.loading = false;
             })
@@ -207,25 +255,25 @@ export default class MealStore {
 
         this.loading = true;
 
-          try {
-             if(!mealId) mealId = 'notSet'; 
+        try {
+            if (!mealId) mealId = 'notSet';
             let result = await agent.ParseRecepie.parse(mealId, rec);
-            
+
             runInAction(() => {
                 let ingredients = result.data;
-            
-                ingredients.map(i => {
-                    if(this.selectedMeal) {
-                        i.mealId = this.selectedMeal.mealId
-                    }
-                });
-                if(this.selectedMeal) {
+
+                /* ingredients.map(i => {
+                     if(this.selectedMeal) {
+                         i.mealId = this.selectedMeal.mealId
+                     }
+                 });*/
+                if (this.selectedMeal) {
                     this.selectedMeal.ingredients = ingredients;
                 }
             })
-          } catch (error) {
-              console.log(error);
-          }
-      }
-           
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
 }
