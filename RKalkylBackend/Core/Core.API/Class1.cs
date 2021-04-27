@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Core.Application
+namespace Core.API
 {
     public class Class1
     {

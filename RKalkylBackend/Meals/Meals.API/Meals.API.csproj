@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Controllers\Controllers.csproj" />
+    <ProjectReference Include="..\..\Core\Core.API\Core.API.csproj" />
     <ProjectReference Include="..\Meals.Application\Meals.Application.csproj" />
     <ProjectReference Include="..\Meals.Persistence\Meals.Persistence.csproj" />
   </ItemGroup>

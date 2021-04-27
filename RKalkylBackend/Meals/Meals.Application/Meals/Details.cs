@@ -7,17 +7,18 @@ using MediatR;
 using AutoMapper;
 using Meals.Application.Dtos;
 using Meals.Persistence;
+using Core.Application;
 
 namespace Meals.Application.Meals
 {
     public class Details
     {
-        public class Query : IRequest<MealDto>
+        public class Query : IRequest<Result<MealDto>>
         {
             public Guid Id { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, MealDto>
+        public class Handler : IRequestHandler<Query, Result<MealDto>>
         {
             private readonly MealsDataContext _context;
             private readonly IMapper _mapper;
@@ -28,11 +29,11 @@ namespace Meals.Application.Meals
                 _mapper = mapper;
             }
 
-            public async Task<MealDto> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<MealDto>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var meal = await _context.Meals.FindAsync(request.Id);
                 var mealDto = _mapper.Map<MealDto>(meal);
-                return mealDto;
+                return Result<MealDto>.CreateResult(mealDto);
             }
         }
     }

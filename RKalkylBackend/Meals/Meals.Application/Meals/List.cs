@@ -8,14 +8,15 @@ using System.Linq;
 using AutoMapper;
 using Meals.Application.Dtos;
 using Meals.Persistence;
+using Core.Application;
 
 namespace Meals.Application.Meals
 {
     public class List
     {
-        public class Query : IRequest<List<MealDto>> { }
+        public class Query : IRequest<Result<List<MealDto>>> { }
 
-        public class Handler : IRequestHandler<Query, List<MealDto>>
+        public class Handler : IRequestHandler<Query, Result<List<MealDto>>>
         {
             private readonly MealsDataContext _context;
             private readonly IMapper _mapper;
@@ -25,7 +26,7 @@ namespace Meals.Application.Meals
                 _context = context;
             }
 
-            public async Task<List<MealDto>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<List<MealDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
 
                 try
@@ -37,7 +38,7 @@ namespace Meals.Application.Meals
                                  .AsNoTracking()
                                  .ToListAsync();
                      var mealDtos = _mapper.Map<List<MealDto>>(meals);
-                     return mealDtos;
+                     return Result<List<MealDto>>.CreateResult(mealDtos);
                 }
                 catch (Exception ex)
                 {

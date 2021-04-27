@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Meals.Application.Ingredients;
 using Meals.Application.Dtos;
 using MediatR;
-using Controllers;
+using Core.API;
 
 namespace Meals.API
 {

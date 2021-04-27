@@ -1,10 +1,49 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import { FoodItem } from '../models/foodItem';
 import { Meal } from '../models/meal';
 import { Ingredient } from '../models/ingredient';
 import { Recepie } from '../models/recepie';
+import { toast } from 'react-toastify';
+import { history } from '../..';
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
+
+axios.interceptors.response.use(async response => {
+    return response
+}, (error: AxiosError) => {
+    const {data, status} = error.response!;
+    switch (status) {
+        case 400:
+            console.log('itt');
+            console.log(data.errors);
+            if (data.errors) {
+                const modelStateErrors = [];
+                for ( const key in data.errors) {
+                    if (data.errors[key]) {
+                        console.log('push');
+                        console.log(key);
+                        console.log(data.errors[key]);
+                        modelStateErrors.push(data.errors[key])
+                    }
+                }
+                throw modelStateErrors.flat();
+            } else {
+                toast.error(data);
+            }
+            
+            break;
+        case 401:
+            toast.error('unauthorised');
+            break;
+        case 404:
+            history.push('/not-found');
+            break;
+        case 500:
+            toast.error('server error');
+            break;
+    }
+    return Promise.reject(error);
+})
 
 const responseBody = <T> (response: AxiosResponse<T>) => response.data;
 

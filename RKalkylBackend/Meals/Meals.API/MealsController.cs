@@ -7,7 +7,7 @@ using MediatR;
 using Meals.Domain;
 using Meals.Application.Meals;
 using Meals.Application.Dtos;
-using Controllers;
+using Core.API;
 
 namespace Meals.API
 {
@@ -22,19 +22,19 @@ namespace Meals.API
         [HttpGet]
         public async Task<ActionResult<List<MealDto>>> GetMeals()
         {
-            return await Mediator.Send(new List.Query());
+            return HandleResult(await Mediator.Send(new List.Query()));
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<MealDto>> GetMeal(Guid id)
         {
-            return await Mediator.Send(new Details.Query() { Id = id });
+            return HandleResult(await Mediator.Send(new Details.Query() { Id = id }));
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateMeal(Meal meal)
         {
-            return Ok(await Mediator.Send(new Create.Command() { Meal = meal }));
+            return HandleResult(await Mediator.Send(new Create.Command() { Meal = meal }));
         }
 
         [HttpPut("{id}")]
@@ -42,13 +42,13 @@ namespace Meals.API
         {
             meal.MealId = id;
 
-            return Ok(await Mediator.Send(new Edit.Command() { Meal = meal }));
+            return HandleResult(await Mediator.Send(new Edit.Command() { Meal = meal }));
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMeal(Guid id)
         {
-            return Ok(await Mediator.Send(new Delete.Command() { Id = id }));
+            return HandleResult(await Mediator.Send(new Delete.Command() { Id = id }));
         }
     }
 }

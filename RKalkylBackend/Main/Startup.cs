@@ -14,7 +14,8 @@ using System.Reflection;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Meals.API;
-using Controllers;
+using FluentValidation.AspNetCore;
+using Core.API;
 //using Controllers;
 
 namespace Main
@@ -32,7 +33,11 @@ namespace Main
         public void ConfigureServices(IServiceCollection services)
         {
             
-            services.AddControllers();
+            services.AddControllers().AddFluentValidation(config =>
+            {
+                config.RegisterValidatorsFromAssemblyContaining<Meals.Application.Meals.Create>();
+            });
+           
 
             services.AddCors(opt =>
             {
@@ -70,9 +75,11 @@ namespace Main
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseMiddleware();
+
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Main v1"));
             }

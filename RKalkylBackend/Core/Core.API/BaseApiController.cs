@@ -13,7 +13,7 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Core.Application;
 
-namespace Controllers
+namespace Core.API
 {
     [ApiController]
     [Route("api/[controller]")]
