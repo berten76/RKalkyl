@@ -104,3 +104,4 @@ namespace Meals.Persistence
 
 }
 //dotnet ef migrations add Name -p Meals.Persistence -s ..\Main
+//dotnet ef database drop -s API -p Persistance

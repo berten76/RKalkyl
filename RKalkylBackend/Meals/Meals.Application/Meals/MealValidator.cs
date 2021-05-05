@@ -13,7 +13,7 @@ namespace Meals.Application.Meals
         public MealValidator()
         {
             RuleFor(x => x.Name).NotEmpty();
-            RuleFor(x => x.Ingredients).NotEmpty();
+           // RuleFor(x => x.Ingredients).NotEmpty();
         }
     }
 }

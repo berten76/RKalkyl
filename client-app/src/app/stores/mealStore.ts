@@ -57,10 +57,10 @@ export default class MealStore {
     }
 
     loadMeal = async (id: string) => {
-
         let meal = this.getMeal(id);
         if (meal) {
             this.selectedMeal = meal;
+            return meal;
         } else {
             this.loading = true;
             try {
@@ -75,6 +75,7 @@ export default class MealStore {
                     }
                     this.setLoadingInitial(false);
                 })
+                return meal;
             } catch (error) {
                 console.log(error);
                 runInAction(() => {
@@ -128,36 +129,31 @@ export default class MealStore {
 
     createMeal = async () => {
         this.loading = true;
-        console.log("create meal inside 1");
         let newMeal = {
             mealId: uuid(),
             name: 'New meal',
             date: new Date(Date.now()),
             ingredients: []
         };
-        console.log("create meal inside 2");
         try {
             await agent.Meals.create(newMeal);
             runInAction(() => {
-                console.log("create meal inside 3");
                 this.meals.push(newMeal);
                 this.selectedMeal = newMeal;
                 this.editMode = false;
                 this.loading = false;
-                console.log("create meal inside 4");
 
             })
         } catch (error) {
-            console.log("create meal inside err1");
             console.log(error);
             runInAction(() => {
                 this.loading = false;
             })
         }
-        console.log("create meal inside 5");
     }
 
     addIngredient = async (ingredient: Ingredient) => {
+        
         let mealId = this.selectedMeal?.mealId;
         if (!mealId) {
             console.log('could not add ingredient,no meal selected')
@@ -179,12 +175,35 @@ export default class MealStore {
         } catch (error) {
             console.log(error);
         }
+        console.log('add')
 
     }
+
+    editMeal = async (meal: Meal) => {
+        if(!this.selectedMeal) {
+            console.log('could not edit ingredient,no meal selected');
+            return;
+        }
+
+        this.loading = true;
+
+        try {
+            await agent.Meals.update(this.selectedMeal);
+        } catch (error) {
+            console.log(error);
+        }
+        runInAction(() => {
+            this.loading = false;
+        })
+ 
+    }
+
     editIngredient = async (ingredient: Ingredient) => {
+        console.log('edit')
         let mealId = this.selectedMeal?.mealId;
         if (!mealId) {
             console.log('could not edit ingredient,no meal selected')
+            return
         }
         if (!ingredient.id) {
             console.log('could not edit ingredient, id not defined')
@@ -251,6 +270,7 @@ export default class MealStore {
     }
 
     ParseRecepie = async (recepie: string) => {
+        console.log('parse')
         let mealId = this.selectedMeal?.mealId;
         let recepieCsv = recepie.split(/\r|\n/).join(';');
 

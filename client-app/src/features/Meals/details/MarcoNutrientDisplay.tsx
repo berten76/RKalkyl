@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default observer(function MarcoNutrientDisplay({ meal }: Props) {
-
+    
     let energy = 0;
     let protein = 0;
     let carbs = 0;
@@ -21,10 +21,8 @@ export default observer(function MarcoNutrientDisplay({ meal }: Props) {
     });
     energy = protein * 4 + carbs * 4 + fat * 9;
     return (
-        <Card fluid>
-            <Card.Content>
-                <Card.Description>
-                    <Table basic='very' celled collapsing>
+
+                    <Table striped  collapsing>
                         <Table.Header>
                             <Table.Row>
 
@@ -72,8 +70,6 @@ export default observer(function MarcoNutrientDisplay({ meal }: Props) {
                             </Table.Row>
                         </Table.Body>
                     </Table>
-                </Card.Description>
-            </Card.Content>
-        </Card>
+
     )
 })

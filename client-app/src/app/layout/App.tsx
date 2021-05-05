@@ -11,6 +11,7 @@ import MealDetails from '../../features/Meals/details/MealDetails';
 import TestErrors from '../../features/errors/TestError';
 import { ToastContainer } from 'react-toastify';
 import NotFound from '../../features/errors/NotFound';
+import ServerError from '../../features/errors/ServerError';
 
 function App() {
   const {mealStore} = useStore();
@@ -23,7 +24,7 @@ function App() {
 
   if (mealStore.lodingInitial) return <LoadingComponent content='Loading...' />
   return (
-    <Fragment> 
+    <Fragment > 
       <ToastContainer position='bottom-right' hideProgressBar/>
       <NavBar />
         <Container style={{marginTop: '7em'}}>
@@ -32,6 +33,7 @@ function App() {
             <Route exact path='/meals' component={MealDashBoard} />
             <Route path='/meals/:id' component={MealDetails} />
             <Route path='/errors' component={TestErrors}/>
+            <Route path='/server-error' component={ServerError} />
             <Route component={NotFound} />
           </Switch>
           

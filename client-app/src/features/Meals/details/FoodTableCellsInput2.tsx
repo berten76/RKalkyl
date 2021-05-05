@@ -4,20 +4,21 @@ import { FoodName } from '../../../app/models/foodName';
 import { Ingredient } from '../../../app/models/ingredient';
 import { useStore } from '../../../app/stores/store';
 import TextInputWithValidation from '../../../common/form/TextInputWithValidation';
-import * as Yup from 'yup';
-import {Formik, Form, Field, ErrorMessage} from 'formik'
+
 
 interface Props {
     ingredient: Ingredient | undefined;
     foodNames: FoodName[];
     filterOptions: (options: any[], query: string) => any[];
     deleteIngredient: boolean;
-    onBlur : () => void;
+
+
+     //   name: string;
+ 
+
 }
-interface Erro {
-    amountInGram: string;
-}
-export default function FoodTableCellsInput({ ingredient, foodNames, filterOptions, deleteIngredient, onBlur}: Props) {
+
+export default function FoodTableCellsInput2({ ingredient, foodNames, filterOptions, deleteIngredient }: Props) {
     const { mealStore } = useStore();
 
     const zeroState = {
@@ -37,37 +38,20 @@ export default function FoodTableCellsInput({ ingredient, foodNames, filterOptio
         selected: false,
     };
 
-    const validationSchema = Yup.object({
-        amountInGram: Yup.number().required(),
-    })
-
     let initialState = ingredient ?? zeroState;
 
-    const [ingredientState, setIngredient] = useState<Ingredient>(initialState);
-    const [validationError, setValidationError] = useState<boolean>(false);
-    const [error, setError] = useState<Erro>({amountInGram: ''});
+    const [ingredientState, setIngredient] = useState<Ingredient>(initialState)
 
     function HandleOnInputChange(event: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData) {
-        if(!isNaN(Number(data.value))) {
-            setValidationError(false);
-            let newIngredient = { ...ingredientState, amountInGram: Number(data.value) };
-            setIngredient(newIngredient);
-        }
-        else {
-            setValidationError(true);
-            setError({amountInGram: data.value});
-        }
+
+        let newIngredient = { ...ingredientState, amountInGram: Number(data.value) };
+        setIngredient(newIngredient);
     }
 
-   /* function HandleOnInputChange2(event: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData) {
-console.log(event);
-      //  let newIngredient = { ...ingredientState, amountInGram: Number(data.value) };
-      //  setIngredient(newIngredient);
-    }*/
-
-
     function HandleOnChange(event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) {
+
         if (!data) return;
+
         let selectedItem = foodNames.find(i => i.value === data.value);
         if (selectedItem) {
             let newFoodItem = selectedItem.value2;
@@ -82,7 +66,8 @@ console.log(event);
     }
 
     function HandleOnAdd() {
-
+        console.log('add');
+        console.log(ingredientState);
         mealStore.addIngredient(ingredientState)
         setIngredient(zeroState);
     }
@@ -91,63 +76,36 @@ console.log(event);
         if (e.key === 'Enter') {
             setIngredient(ingredientState);
             mealStore.editIngredient(ingredientState);
-            onBlur();
         }
-    }
-    function handleOnBlur() {
-        console.log('blur-----------------------')
-        setIngredient(ingredientState);
-        mealStore.editIngredient(ingredientState);
-        onBlur();
     }
 
     function HandleDelete(ingredientId: string) {
         mealStore.deleteIngredient(ingredientId);
     }
 
-    let carbs = Math.round(ingredientState.foodItem.carbs * ingredientState.amountInGram / 100.0);
-
     return (
         <>
             <Table.Cell style={{ padding: '0' }}>
                 <Dropdown
-                value={ingredientState.foodItem.name}
                     floating
                     fluid
                     search={filterOptions}
                     selection
                     options={foodNames}
-               
+                    defaultValue={ingredientState.foodItem.name}
                     onChange={HandleOnChange}
                 />
             </Table.Cell>
             <Table.Cell style={{ padding: '0' }}>
-                <Formik
-                  validationSchema={validationSchema}
-                  enableReinitialize 
-                  initialValues={validationError ? error : ingredientState} 
-                  onSubmit={values => console.log(values)}> 
-                
-                     <TextInputWithValidation onBlur={handleOnBlur} onKeyPress={onKeyPress} onChange={HandleOnInputChange} name='amountInGram' placeholder='Amount'/>
-                </Formik>
-                
- 
+               {/* <TextInputWithValidation name='amountInGram' placeholder='Amount'/>*/}
+              
             </Table.Cell>
             <Table.Cell>g</Table.Cell>
-            <Table.Cell>{carbs}</Table.Cell>
-
             <Table.Cell style={{ padding: '0' }} textAlign='center' >
 
-                {deleteIngredient && <Button  floated='right' onClick={() => HandleDelete(ingredientState.id)} color='red'>Delete</Button>}
-                {!deleteIngredient && <Button  floated='right' style={{ width: "6em" }} color='green' onClick={() => HandleOnAdd()} >Add</Button>}
+                {deleteIngredient && <Button onClick={() => HandleDelete(ingredientState.id)} color='red'>Delete</Button>}
+                {!deleteIngredient && <Button style={{ width: "6em" }} color='green' onClick={() => HandleOnAdd()} >Add</Button>}
             </Table.Cell>
         </>
     )
 }
-/*
-
-               <Input
-                    onKeyDown={(e: any) => onKeyPress(e)}
-                    defaultValue={ingredientState.amountInGram}
-                    onChange={HandleOnInputChange}
-                />*/

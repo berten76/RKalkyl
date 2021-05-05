@@ -14,23 +14,27 @@ namespace Meals.Application.RecepieToMeal
             double returnvalue = 0;
             switch(unit)
             {
-                case "g":
-                case "gram":
+                case Units.g:
+                case Units.gram:
                     returnvalue = amount;
                     break;
-                case "dl":
+                case Units.dl:
                     returnvalue = foodItem.WeightPerDl * amount;
                     break;
-                case "l":
+                case Units.l:
                     returnvalue = foodItem.WeightPerDl * amount * 10;
                     break;
-                case "tsk":
+                case Units.tsk:
                     returnvalue = foodItem.WeightPerDl * amount * 0.05;
                     break;
-                case "msk":
+                case Units.msk:
                     returnvalue = foodItem.WeightPerDl * amount * 0.15;
                     break;
-                case "st":
+                case Units.krm:
+                    returnvalue = foodItem.WeightPerDl * amount * 0.01;
+                    break;
+                case Units.förp:
+                case Units.st:
                     returnvalue = foodItem.WeightPerItem * amount;
                     break;
             }
@@ -38,9 +42,3 @@ namespace Meals.Application.RecepieToMeal
         }
     }
 }
-/*"g",
-                "gram",
-                "dl",
-                "l",
-                "tsk",
-                "msk",*/

@@ -23,6 +23,7 @@ namespace Meals.Application.Ingredients
             public async Task<Unit> Handle(Command cmd, CancellationToken cancellationToken)
             {
                 var ingredient = await _context.Ingredient.FindAsync(cmd.Id);
+                if (ingredient == null) return Unit.Value;
                 _context.Ingredient.Remove(ingredient);
                 await _context.SaveChangesAsync();
                 return Unit.Value;

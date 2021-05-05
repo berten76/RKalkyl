@@ -40,6 +40,17 @@ namespace Meals.Application.RecepieToMeal
                 {
                     amount = RKalkylMath.Fractional.ToDecimal(str);
                 }
+                else if(RKalkylMath.Fractional.IsFractional(recepieLineSplit[1]))
+                {
+                    var recepieLineSplit2 = new List<string>();
+                    recepieLineSplit2.Add(recepieLineSplit[0] + " " + recepieLineSplit[1]);
+                    recepieLineSplit.RemoveAt(0);
+                    recepieLineSplit.RemoveAt(0);
+                    recepieLineSplit2.AddRange(recepieLineSplit);
+                    recepieLineSplit = recepieLineSplit2;
+                    amount = RKalkylMath.Fractional.ToDecimal(recepieLineSplit[0]);
+
+                }
                 else
                 {
                     double.TryParse(str, out amount);

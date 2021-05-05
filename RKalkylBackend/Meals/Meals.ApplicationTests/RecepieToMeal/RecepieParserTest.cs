@@ -11,6 +11,7 @@ namespace Meals.ApplicationTests.RecepieToMeal
     [TestFixture]
     public class RecepieParserTest
     {
+        [TestCase("1 1/2 dl grovhackade rostade pumpafrö", 1.5, "dl", "grovhackade rostade pumpafrö")]
         [TestCase("salt och peppar", 0, "st", "salt och peppar")]
         [TestCase("1 tsk torkad timjan", 1, "tsk", "torkad timjan")]
         [TestCase("4 kycklingfiléer", 4, "st", "kycklingfiléer")]

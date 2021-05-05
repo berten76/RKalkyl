@@ -50,9 +50,10 @@ namespace Meals.Application.Meals
                                                 .FirstOrDefaultAsync(r => r.MealId == cmd.Meal.MealId);
 
                     if (meal == null) return Result<Unit>.NotFound();
+                    //meal.Date = cmd.Meal.Date;
+                    meal.Name = cmd.Meal.Name;
+                    //_mapper.Map(cmd.Meal, meal);
 
-                    _mapper.Map(cmd.Meal, meal);
-                   
                     bool result = await _context.SaveChangesAsync() > 0;
 
                     if (!result) return Result<Unit>.Failure("Failed to safe meal");

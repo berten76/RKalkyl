@@ -5,15 +5,16 @@ import { useStore } from '../../../app/stores/store';
 
 interface Props {
     ingredient: Ingredient;
+    showButton: boolean;
 }
 
-export default function FoodTableCells({ ingredient }: Props) {
+export default function FoodTableCells({ ingredient, showButton }: Props) {
     const { mealStore } = useStore();
 
     function HandleDelete(ingredientId: string) {
         mealStore.deleteIngredient(ingredientId);
     }
-
+    let carbs = Math.round(ingredient.foodItem.carbs * ingredient.amountInGram / 100.0);
     return (
         <>
             <Table.Cell >
@@ -23,9 +24,10 @@ export default function FoodTableCells({ ingredient }: Props) {
                 {ingredient.amountInGram}
             </Table.Cell>
             <Table.Cell>g</Table.Cell>
-            <Table.Cell style={{ padding: '0' }} textAlign='center'>
-                <Button onClick={() => HandleDelete(ingredient.id)} color='red'>Delete</Button>
-            </Table.Cell>
+            <Table.Cell>{carbs}</Table.Cell>
+            {showButton &&<Table.Cell style={{ padding: '0' }} textAlign='center'>
+                <Button floated='right'  onClick={() => HandleDelete(ingredient.id)} color='red'>Delete</Button>
+            </Table.Cell>}
         </>
     )
 }
