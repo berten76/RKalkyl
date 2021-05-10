@@ -86,7 +86,11 @@ export default observer(function MealDetails() {
 
     if (lodingInitial || !meal) return <LoadingComponent />
 
+    let aa = [meal];
+
     console.log('details222222222222222222-------------------------------')
+    console.log(aa)
+    
     return (
         <Card fluid className='border' onClick={() => mealStore.selectMeal(id)}>
             <Card.Content>
@@ -97,7 +101,7 @@ export default observer(function MealDetails() {
                     <span className='date'>{meal.name}</span>
                 </Card.Meta>
                 <Card.Description>
-                    <MarcoNutrientDisplay meal={meal} />
+                    <MarcoNutrientDisplay meals={[meal]} />
                 </Card.Description>
                 <Table striped selectable >
                     <Table.Header>

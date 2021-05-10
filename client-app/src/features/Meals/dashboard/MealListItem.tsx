@@ -24,7 +24,7 @@ export default function MealListItem({ meal }: Props) {
         <Segment key={meal.mealId}>
             <h2>{meal.name}</h2>
             <div>Not impl</div>
-            <MarcoNutrientDisplay meal={meal} />
+            <MarcoNutrientDisplay meals={[meal]} />
             <Table striped>
                 <Table.Header>
                     <Table.Row>

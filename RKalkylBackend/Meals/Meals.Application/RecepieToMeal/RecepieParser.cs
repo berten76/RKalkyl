@@ -32,6 +32,16 @@ namespace Meals.Application.RecepieToMeal
         {
             var recepieLineSplit = recepieLine.Split(" ").ToList();
 
+            if(recepieLineSplit.Count == 1)
+            {
+                return new RecepieParsedData()
+                {
+                    Amount = 0,
+                    Unit = "st",
+                    IngredientString = string.Join(" ", recepieLineSplit)
+                };
+            }
+
             double amount = 0;
             if (recepieLineSplit[0] != null)
             {

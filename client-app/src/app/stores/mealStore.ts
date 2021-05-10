@@ -13,9 +13,14 @@ export default class MealStore {
     loading = false;
     lodingInitial = false;
     pasteMode = false;
+    selectedDate: Date = new Date();
 
     constructor() {
         makeAutoObservable(this)
+    }
+
+    setSelectedDate(date: Date){
+        this.selectedDate = date;
     }
 
     loadMeals = async () => {
@@ -55,6 +60,19 @@ export default class MealStore {
             })
         }
     }
+
+     getMealsSelectedDay() {
+        return this.meals.filter(m => m.date && this.isDatesSameDay(m.date, this.selectedDate));
+    }
+
+    isDatesSameDay(date1In: Date, date2In: Date) {
+     
+        const date1 = new Date(date1In);
+        const date2 = new Date(date2In);
+        return date1.getDate() === date2.getDate() &&
+        date1.getMonth() === date2.getMonth() &&
+        date1.getFullYear() === date2.getFullYear();
+      }
 
     loadMeal = async (id: string) => {
         let meal = this.getMeal(id);
@@ -132,7 +150,7 @@ export default class MealStore {
         let newMeal = {
             mealId: uuid(),
             name: 'New meal',
-            date: new Date(Date.now()),
+            date: this.selectedDate,
             ingredients: []
         };
         try {
