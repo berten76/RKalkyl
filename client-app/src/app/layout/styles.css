@@ -140,7 +140,10 @@ buttonRK {
 .ui.table thead th {
   border-bottom: 1px solid black;
 }
-
+.floatedRight {
+  float: right;
+  margin-left: 4px;
+}
 /*  border-width: 0.1em;
   border-style: solid;
   border-color: black !important;;*/

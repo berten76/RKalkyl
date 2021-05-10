@@ -7,6 +7,24 @@ export default function PasteDialog() {
     const { mealStore } = useStore();
     const [recepieString, setRecepieString] = useState<any>('');
 
+    return (
+        <Card fluid>
+            <Card.Content>
+
+                <Card.Description>
+                    <TextArea
+                        placeholder='Paste recepie here'
+                        onChange={HandleOnInputChange}
+                        style={{ minHeight: 200, minWidth: 400 }}
+                    />
+                </Card.Description>
+            </Card.Content>
+            <Card.Content extra>
+                <Button onClick={() => HandleOnClick()} positive content='Parse recepie' />
+            </Card.Content>
+        </Card>
+    )
+
     function HandleOnInputChange(event: React.ChangeEvent<HTMLTextAreaElement>, data: TextAreaProps) {
 
         const value = data.value;
@@ -20,25 +38,4 @@ export default function PasteDialog() {
         mealStore.ParseRecepie(recepieString);
         mealStore.setPasteMode(false)
     }
-
-    return (
-        <Card fluid>
-            <Card.Content>
-                <Card.Header>Header</Card.Header>
-                <Card.Meta>
-                    <span className='date'>Joined in 2015</span>
-                </Card.Meta>
-                <Card.Description>
-                    <TextArea
-                        placeholder='Paste recepie here'
-                        onChange={HandleOnInputChange}
-                        style={{ minHeight: 200, minWidth: 400 }}
-                    />
-                </Card.Description>
-            </Card.Content>
-            <Card.Content extra>
-                <Button onClick={() => HandleOnClick()} basic color='grey' content='Parse recepie' />
-            </Card.Content>
-        </Card>
-    )
 }

@@ -10,11 +10,8 @@ interface Props {
 
 export default function FoodTableCells({ ingredient, showButton }: Props) {
     const { mealStore } = useStore();
-
-    function HandleDelete(ingredientId: string) {
-        mealStore.deleteIngredient(ingredientId);
-    }
     let carbs = Math.round(ingredient.foodItem.carbs * ingredient.amountInGram / 100.0);
+
     return (
         <>
             <Table.Cell >
@@ -25,9 +22,12 @@ export default function FoodTableCells({ ingredient, showButton }: Props) {
             </Table.Cell>
             <Table.Cell>g</Table.Cell>
             <Table.Cell>{carbs}</Table.Cell>
-            {showButton &&<Table.Cell style={{ padding: '0' }} textAlign='center'>
-                <Button floated='right'  onClick={() => HandleDelete(ingredient.id)} color='red'>Delete</Button>
+            {showButton && <Table.Cell style={{ padding: '0' }} textAlign='center'>
+                <Button floated='right' onClick={() => HandleDelete(ingredient.id)} color='red'>Delete</Button>
             </Table.Cell>}
         </>
     )
+    function HandleDelete(ingredientId: string) {
+        mealStore.deleteIngredient(ingredientId);
+    }
 }

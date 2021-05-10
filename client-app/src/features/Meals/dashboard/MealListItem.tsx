@@ -1,8 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Grid, Item, Label, Segment, Table } from 'semantic-ui-react'
+import { Button, Grid, Segment, Table } from 'semantic-ui-react'
 import { Meal } from '../../../app/models/meal'
 import { useStore } from '../../../app/stores/store'
+import DeleteModal from '../../../common/components/DeleteModa'
 import FoodTableCells from '../details/FoodTableCells'
 import MarcoNutrientDisplay from '../details/MarcoNutrientDisplay'
 
@@ -10,15 +11,7 @@ interface Props {
     meal: Meal
 }
 export default function MealListItem({ meal }: Props) {
-
     const { mealStore } = useStore();
-
-    function HandleDeleteMeal(mealId: string) {
-        mealStore.deleteMeal(mealId);
-        if (mealStore.selectedMeal?.mealId === mealId) {
-            mealStore.cancelSelectedMeal();
-        }
-    }
 
     return (
         <Segment key={meal.mealId}>
@@ -49,20 +42,27 @@ export default function MealListItem({ meal }: Props) {
 
                 </Grid.Column>
                 <Grid.Column width='6'>
-                    <Button as={Link} to={`/meals/${meal.mealId}`} floated='right' content='View' color='blue' />
-
-
-
-                    <Button className='buttonRK'
-                        floated='right'
-                        content='Delete'
-                        color='red'
-                        onClick={() => HandleDeleteMeal(meal.mealId)}
-                    />
+                    <div className='floatedRight'>
+                        <DeleteModal setResponse={(deleteMeal) => HandleResponseFromModal(deleteMeal, meal.mealId)} />
+                    </div>
+                    <Button as={Link} to={`/meals/${meal.mealId}`} floated='right' content='Edit' color='blue' />
                 </Grid.Column>
             </Grid>
 
         </Segment>
     )
+
+    function HandleDeleteMeal(mealId: string) {
+        mealStore.deleteMeal(mealId);
+        if (mealStore.selectedMeal?.mealId === mealId) {
+            mealStore.cancelSelectedMeal();
+        }
+    }
+
+    function HandleResponseFromModal(deleteMeal: boolean, mealId: string) {
+        if (deleteMeal) {
+            HandleDeleteMeal(mealId);
+        }
+    }
 }
 

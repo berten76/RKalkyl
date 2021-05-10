@@ -1,23 +1,23 @@
 import React, { useState } from 'react';
-import { Button, Dropdown, DropdownProps, Input, InputOnChangeData, Table } from 'semantic-ui-react';
+import { Button, Dropdown, DropdownProps,  InputOnChangeData, Table } from 'semantic-ui-react';
 import { FoodName } from '../../../app/models/foodName';
 import { Ingredient } from '../../../app/models/ingredient';
 import { useStore } from '../../../app/stores/store';
 import TextInputWithValidation from '../../../common/form/TextInputWithValidation';
 import * as Yup from 'yup';
-import {Formik, Form, Field, ErrorMessage} from 'formik'
+import { Formik } from 'formik'
 
 interface Props {
     ingredient: Ingredient | undefined;
     foodNames: FoodName[];
     filterOptions: (options: any[], query: string) => any[];
     deleteIngredient: boolean;
-    onBlur : () => void;
+    onBlur: () => void;
 }
 interface Erro {
     amountInGram: string;
 }
-export default function FoodTableCellsInput({ ingredient, foodNames, filterOptions, deleteIngredient, onBlur}: Props) {
+export default function FoodTableCellsInput({ ingredient, foodNames, filterOptions, deleteIngredient, onBlur }: Props) {
     const { mealStore } = useStore();
 
     const zeroState = {
@@ -45,26 +45,55 @@ export default function FoodTableCellsInput({ ingredient, foodNames, filterOptio
 
     const [ingredientState, setIngredient] = useState<Ingredient>(initialState);
     const [validationError, setValidationError] = useState<boolean>(false);
-    const [error, setError] = useState<Erro>({amountInGram: ''});
+    const [error, setError] = useState<Erro>({ amountInGram: '' });
+
+    let carbs = Math.round(ingredientState.foodItem.carbs * ingredientState.amountInGram / 100.0);
+
+    return (
+        <>
+            <Table.Cell style={{ padding: '0' }}>
+                <Dropdown
+                    value={ingredientState.foodItem.name}
+                    floating
+                    fluid
+                    search={filterOptions}
+                    selection
+                    options={foodNames}
+
+                    onChange={HandleOnChange}
+                />
+            </Table.Cell>
+            <Table.Cell style={{ padding: '0' }}>
+                <Formik
+                    validationSchema={validationSchema}
+                    enableReinitialize
+                    initialValues={validationError ? error : ingredientState}
+                    onSubmit={values => console.log(values)}>
+
+                    <TextInputWithValidation onBlur={handleOnBlur} onKeyPress={onKeyPress} onChange={HandleOnInputChange} name='amountInGram' placeholder='Amount' />
+                </Formik>
+            </Table.Cell>
+            <Table.Cell>g</Table.Cell>
+            <Table.Cell>{carbs}</Table.Cell>
+            <Table.Cell style={{ padding: '0' }} textAlign='center' >
+
+                {deleteIngredient && <Button floated='right' onClick={() => HandleDelete(ingredientState.id)} color='red'>Delete</Button>}
+                {!deleteIngredient && <Button floated='right' style={{ width: "6em" }} color='green' onClick={() => HandleOnAdd()} >Add</Button>}
+            </Table.Cell>
+        </>
+    )
 
     function HandleOnInputChange(event: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData) {
-        if(!isNaN(Number(data.value))) {
+        if (!isNaN(Number(data.value))) {
             setValidationError(false);
             let newIngredient = { ...ingredientState, amountInGram: Number(data.value) };
             setIngredient(newIngredient);
         }
         else {
             setValidationError(true);
-            setError({amountInGram: data.value});
+            setError({ amountInGram: data.value });
         }
     }
-
-   /* function HandleOnInputChange2(event: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData) {
-console.log(event);
-      //  let newIngredient = { ...ingredientState, amountInGram: Number(data.value) };
-      //  setIngredient(newIngredient);
-    }*/
-
 
     function HandleOnChange(event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) {
         if (!data) return;
@@ -82,7 +111,6 @@ console.log(event);
     }
 
     function HandleOnAdd() {
-
         mealStore.addIngredient(ingredientState)
         setIngredient(zeroState);
     }
@@ -95,7 +123,6 @@ console.log(event);
         }
     }
     function handleOnBlur() {
-        console.log('blur-----------------------')
         setIngredient(ingredientState);
         mealStore.editIngredient(ingredientState);
         onBlur();
@@ -104,50 +131,4 @@ console.log(event);
     function HandleDelete(ingredientId: string) {
         mealStore.deleteIngredient(ingredientId);
     }
-
-    let carbs = Math.round(ingredientState.foodItem.carbs * ingredientState.amountInGram / 100.0);
-
-    return (
-        <>
-            <Table.Cell style={{ padding: '0' }}>
-                <Dropdown
-                value={ingredientState.foodItem.name}
-                    floating
-                    fluid
-                    search={filterOptions}
-                    selection
-                    options={foodNames}
-               
-                    onChange={HandleOnChange}
-                />
-            </Table.Cell>
-            <Table.Cell style={{ padding: '0' }}>
-                <Formik
-                  validationSchema={validationSchema}
-                  enableReinitialize 
-                  initialValues={validationError ? error : ingredientState} 
-                  onSubmit={values => console.log(values)}> 
-                
-                     <TextInputWithValidation onBlur={handleOnBlur} onKeyPress={onKeyPress} onChange={HandleOnInputChange} name='amountInGram' placeholder='Amount'/>
-                </Formik>
-                
- 
-            </Table.Cell>
-            <Table.Cell>g</Table.Cell>
-            <Table.Cell>{carbs}</Table.Cell>
-
-            <Table.Cell style={{ padding: '0' }} textAlign='center' >
-
-                {deleteIngredient && <Button  floated='right' onClick={() => HandleDelete(ingredientState.id)} color='red'>Delete</Button>}
-                {!deleteIngredient && <Button  floated='right' style={{ width: "6em" }} color='green' onClick={() => HandleOnAdd()} >Add</Button>}
-            </Table.Cell>
-        </>
-    )
 }
-/*
-
-               <Input
-                    onKeyDown={(e: any) => onKeyPress(e)}
-                    defaultValue={ingredientState.amountInGram}
-                    onChange={HandleOnInputChange}
-                />*/

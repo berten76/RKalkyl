@@ -1,6 +1,6 @@
-import React, { FormEventHandler } from 'react';
+import React from 'react';
 import {useField} from 'formik'
-import {DropdownProps, Form, Input, InputOnChangeData, Label} from 'semantic-ui-react'
+import {Form, Input, InputOnChangeData, Label} from 'semantic-ui-react'
 
 interface Props {
     placeholder: string;
