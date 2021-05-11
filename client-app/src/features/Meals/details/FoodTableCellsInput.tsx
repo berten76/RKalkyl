@@ -78,7 +78,7 @@ export default function FoodTableCellsInput({ ingredient, foodNames, filterOptio
             <Table.Cell style={{ padding: '0' }} textAlign='center' >
 
                 {deleteIngredient && <Button floated='right' onClick={() => HandleDelete(ingredientState.id)} color='red'>Delete</Button>}
-                {!deleteIngredient && <Button floated='right' style={{ width: "6em" }} color='green' onClick={() => HandleOnAdd()} >Add</Button>}
+                {!deleteIngredient && <Button floated='right' style={{ width: "6em" }}  color='blue' onClick={() => HandleOnAdd()} >Add</Button>}
             </Table.Cell>
         </>
     )

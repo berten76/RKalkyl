@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { Button, Card, Table } from 'semantic-ui-react';
+import { Button, Card, Grid, Segment, Table } from 'semantic-ui-react';
 import FoodTableCells from './FoodTableCells';
 import { FoodName } from '../../../app/models/foodName';
 import FoodTableCellsInput from './FoodTableCellsInput';
@@ -52,7 +52,105 @@ export default observer(function MealDetails() {
     if (lodingInitial || !meal) return <LoadingComponent />
 
     return (
-        <Card fluid className='border' onClick={() => mealStore.selectMeal(id)}>
+        <Segment key={meal.mealId} className='border' onClick={() => mealStore.selectMeal(id)}>
+            <EditableField mealName={meal.name} NewMealNameEvent={HandleNewMealName} />
+            <MarcoNutrientDisplay meals={[meal]} />
+
+            <Table striped selectable >
+                <Table.Header>
+                    <Table.Row>
+                        <Table.HeaderCell width={5}>Description</Table.HeaderCell>
+                        <Table.HeaderCell width={1} >Amount</Table.HeaderCell>
+                        <Table.HeaderCell width={1} >Unit</Table.HeaderCell>
+                        <Table.HeaderCell width={1} >Carbs</Table.HeaderCell>
+                        <Table.HeaderCell width={1} ></Table.HeaderCell>
+                    </Table.Row>
+                </Table.Header>
+                <Table.Body>
+                    {ingredients && ingredients.map(i => (
+
+                        <Table.Row key={i.id} onClick={() => { HandleOnFocus(i.id) }} >
+
+                            {i.selected && <FoodTableCellsInput
+                                ingredient={i}
+                                foodNames={foodNames}
+                                filterOptions={FilterOptions}
+                                deleteIngredient={true}
+                                onBlur={() => setSelectedIngredientId('')}
+                            />
+                            }
+                            {!i.selected &&
+                                <FoodTableCells ingredient={i} showButton={true} />
+                            }
+
+                        </Table.Row>
+
+                    ))}
+                    {(meal.mealId === mealStore.selectedMeal?.mealId) && <Table.Row >
+                        <FoodTableCellsInput
+                            ingredient={undefined}
+                            foodNames={foodNames}
+                            filterOptions={FilterOptions}
+                            deleteIngredient={false}
+                            onBlur={() => { }}
+                        />
+                    </Table.Row>}
+                </Table.Body>
+            </Table>
+
+            <Grid>
+                <Grid.Row style={{ padding: '0.5em' }}></Grid.Row>
+                <Grid.Column width='10'>
+
+                </Grid.Column>
+                <Grid.Column width='6'>
+                    <div className='floatedRight'>
+                        <DeleteModal setResponse={(deleteMeal) => HandleResponseFromModal(deleteMeal, id)} />
+                    </div>
+                    <Button floated='right' onClick={() => setPasteMode(true)} color='blue' content='Paste a recepie' />
+                    <Button floated='right' onClick={() => HandleClose()} color='blue' content='Close' />
+                </Grid.Column>
+            </Grid>
+            {pasteMode && <PasteDialog />}
+        </Segment>
+    )
+
+    function FilterOptions(options: any[], query: string) {
+        return options.filter((f: FoodName) => f.value.toLowerCase()?.startsWith(query.toLowerCase()));
+    };
+    function HandleOnFocus(id: string) {
+
+        setSelectedIngredientId(id);
+    };
+
+    function HandleClose() {
+        mealStore.cancelSelectedMeal();
+        history.push('/meals/');
+    }
+
+    function HandleNewMealName(newMealName: string) {
+        runInAction(() => {
+            if (mealStore.selectedMeal) {
+                mealStore.selectedMeal.name = newMealName;
+                mealStore.editMeal(mealStore.selectedMeal);
+            }
+        })
+    }
+    function HandleDeleteMeal(mealId: string) {
+        mealStore.deleteMeal(mealId);
+        if (mealStore.selectedMeal?.mealId === mealId) {
+            mealStore.cancelSelectedMeal();
+        }
+    }
+
+    function HandleResponseFromModal(deleteMeal: boolean, mealId: string) {
+        if (deleteMeal) {
+            HandleDeleteMeal(mealId);
+        }
+    }
+});
+
+{/* <Card fluid className='border' onClick={() => mealStore.selectMeal(id)}>
             <Card.Content>
                 <Card.Header>
                     <EditableField mealName={meal.name} NewMealNameEvent={HandleNewMealName} />
@@ -109,45 +207,9 @@ export default observer(function MealDetails() {
                 <div className='floatedRight'>
                     <DeleteModal setResponse={(deleteMeal) => HandleResponseFromModal(deleteMeal, id)} />
                 </div>
-                <Button floated='right' onClick={() => setPasteMode(true)} positive content='Paste a recepie' />
-                <Button floated='right' onClick={() => HandleClose()} positive content='Close' />
+                <Button floated='right' onClick={() => setPasteMode(true)}  color='blue' content='Paste a recepie' />
+                <Button floated='right' onClick={() => HandleClose()}  color='blue' content='Close' />
 
             </Card.Content>
             {pasteMode && <PasteDialog />}
-        </Card>
-    )
-
-    function FilterOptions(options: any[], query: string) {
-        return options.filter((f: FoodName) => f.value.toLowerCase()?.startsWith(query.toLowerCase()));
-    };
-    function HandleOnFocus(id: string) {
-
-        setSelectedIngredientId(id);
-    };
-
-    function HandleClose() {
-        mealStore.cancelSelectedMeal();
-        history.push('/meals/');
-    }
-
-    function HandleNewMealName(newMealName: string) {
-        runInAction(() => {
-            if (mealStore.selectedMeal) {
-                mealStore.selectedMeal.name = newMealName;
-                mealStore.editMeal(mealStore.selectedMeal);
-            }
-        })
-    }
-    function HandleDeleteMeal(mealId: string) {
-        mealStore.deleteMeal(mealId);
-        if (mealStore.selectedMeal?.mealId === mealId) {
-            mealStore.cancelSelectedMeal();
-        }
-    }
-
-    function HandleResponseFromModal(deleteMeal: boolean, mealId: string) {
-        if (deleteMeal) {
-            HandleDeleteMeal(mealId);
-        }
-    }
-});
+        </Card> */}

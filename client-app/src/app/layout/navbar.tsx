@@ -27,7 +27,7 @@ export default function NavBar(){
                 <Menu.Item as={NavLink} to='/meals' name='Meals' />
                 <Menu.Item as={NavLink} to='/errors' name='Errors' />
                 <Menu.Item>
-                    <Button positive content='Create meal' 
+                    <Button  color='blue' content='Create meal' 
                         onClick={() => HandleCreateMeal()}
                     />
                 </Menu.Item>

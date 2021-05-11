@@ -13,16 +13,16 @@ export default observer(function MealDashBoard() {
 
     return (
         <Grid>
-            <Grid.Column width='6'>
+            <Grid.Column width='5'>
                 <MealCalendar />
             </Grid.Column>
-            <Grid.Column width='10'>
+            <Grid.Column width='11'>
                 <Segment >
                     <h1>Total:</h1>
                     <MarcoNutrientDisplay meals={mealStore.getMealsSelectedDay()} />
                 </Segment>
                 <MealList />
-                <Button positive content='Create meal' onClick={HandleCreateMeal} />
+                <Button  color='blue' content='Create meal' onClick={HandleCreateMeal} />
             </Grid.Column>
         </Grid>
     )

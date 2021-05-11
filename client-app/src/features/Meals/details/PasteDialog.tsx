@@ -20,7 +20,7 @@ export default function PasteDialog() {
                 </Card.Description>
             </Card.Content>
             <Card.Content extra>
-                <Button onClick={() => HandleOnClick()} positive content='Parse recepie' />
+                <Button onClick={() => HandleOnClick()}  color='blue' content='Parse recepie' />
             </Card.Content>
         </Card>
     )
